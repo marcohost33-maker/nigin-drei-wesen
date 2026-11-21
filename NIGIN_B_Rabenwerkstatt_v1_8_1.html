@@ -1,0 +1,420 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#112d34"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-VpoAoepWEj9OxOmB+fXkxIWZFWstW3Arvdm8YUjci7Q='; style-src 'sha256-Yr1+tMzDt6dPPQHx8ewUME+q3bsqoMmx30+rfXkrPgo='; img-src data:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"><title>NIGIN · Rabenwerkstatt v1.8.1</title><style>:root{color-scheme:dark;--ink:#e8efe8;--muted:#b9ccc8;--mint:#bdf2d4;--line:#ffffff24;--glass:#10252ddd;--panel:#11262df0}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:system-ui,Segoe UI,Arial,sans-serif;background:#0c2730;color:var(--ink);overflow:hidden}button,input{font:inherit}button{color:var(--ink);cursor:pointer;touch-action:manipulation}button:focus-visible,input:focus-visible{outline:3px solid #d7f9a7;outline-offset:2px}button:disabled{opacity:.4;cursor:not-allowed}#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}.veil{background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--line);box-shadow:0 16px 46px #061b2099}.top{position:fixed;left:17px;top:15px;right:17px;display:flex;align-items:start;gap:10px;justify-content:space-between;pointer-events:none}.top>*{pointer-events:auto}.titlebar{border-radius:19px;padding:15px 18px}.eyebrow{font-size:10px;font-weight:800;letter-spacing:.22em;color:#acd9be}.titlebar h1{font-size:21px;margin:4px 0 0;letter-spacing:-.035em}.titlebar small{font-size:10px;color:#a4cac1}.topactions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.btn{border:1px solid #6a988f75;background:#25424c;border-radius:12px;padding:10px 12px;font-size:12px;font-weight:650}.btn:hover{background:#396b67}.btn.active{background:#b7edcb;color:#173838;border-color:#b7edcb}.side{position:fixed;top:114px;left:17px;width:220px;max-height:calc(100vh - 205px);overflow:auto;border-radius:19px;padding:15px}.side h2{font-size:14px;margin:0 0 3px}.side p{font-size:11px;color:#a4c3c2;line-height:1.48;margin:0 0 13px}.section{font-size:10px;font-weight:800;letter-spacing:.16em;color:#a2d4bf;margin:11px 0 7px}.tools{display:grid;grid-template-columns:1fr 1fr;gap:6px}.tool{background:#183842;border:1px solid #567a7a;border-radius:12px;padding:10px 5px;display:flex;flex-direction:column;gap:4px;align-items:center;min-height:62px}.tool span{font-size:19px}.tool small{font-size:10px}.tool.active{border-color:#c8ffdb;background:#2e655c}.tool:hover{background:#34645d}.right{position:fixed;right:17px;top:114px;width:214px;padding:15px;border-radius:19px}.right h2{font-size:14px;margin:0 0 9px}.right .stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.stat{padding:8px;background:#24434a;border-radius:11px}.stat strong{display:block;font-size:17px}.stat small{font-size:10px;color:#b5cdca}.right p{font-size:11px;line-height:1.6;color:#c1d6d2;margin:10px 0}.right hr{border:0;border-top:1px solid #ffffff25;margin:13px 0}.bottom{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);padding:9px 12px;border-radius:16px;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 20px);flex-wrap:wrap;justify-content:center}.footer-note{position:fixed;bottom:14px;left:18px;background:#081b20aa;padding:7px 9px;border-radius:9px;font-size:10px;color:#c0dad2;max-width:270px}.tip{position:fixed;bottom:14px;right:17px;background:#081b20cc;padding:9px 12px;border-radius:10px;font-size:11px;color:#d3ecdf;max-width:210px}.modal{position:fixed;inset:0;background:#041a1fbb;display:flex;align-items:center;justify-content:center;padding:20px;z-index:4}.modal[hidden]{display:none}.dialog{max-width:535px;width:100%;padding:26px;border-radius:24px}.dialog h2{font-size:28px;margin:8px 0}.dialog p{font-size:13px;line-height:1.7;color:#c8dbd1}.dialog .btn{margin-top:8px}.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#0e3839;border:1px solid #9bd7b4;border-radius:12px;padding:10px 16px;font-size:12px;pointer-events:none;opacity:0;transition:opacity .22s;z-index:5;text-align:center}.toast.show{opacity:1}#loadfile{display:none}.swatch{display:inline-block;width:12px;height:12px;border-radius:50%;background:#9fdcc1;margin-right:6px}#modeHint{min-height:45px}#inspect{min-height:37px}.screensr{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden}
+@media(max-width:940px){.right{width:174px}.side{width:190px}.top{top:8px;left:8px;right:8px}.titlebar{padding:10px 12px}.titlebar h1{font-size:16px}.topactions{max-width:64%}.btn{padding:8px;font-size:11px}.side{left:8px;top:87px}.right{right:8px;top:87px}.footer-note{display:none}}
+@media(max-width:680px){.titlebar small{display:none}.titlebar h1{font-size:13px}.titlebar{padding:10px}.eyebrow{font-size:8px}.topactions{max-width:68%;gap:4px}.topactions .btn{padding:8px 6px;font-size:10px}.side{top:auto;left:8px;right:8px;bottom:65px;width:auto;max-height:160px;padding:9px;overflow:auto}.side h2,.side p,.section{display:none}.tools{display:flex;gap:6px;overflow:auto}.tool{min-width:64px;padding:7px 2px;min-height:58px}.tool span{font-size:17px}.tool small{font-size:9px}.right{right:8px;top:66px;width:143px;padding:9px}.right h2{font-size:11px}.right p{font-size:10px;margin:6px 0}.right .stats{gap:3px}.stat{padding:5px}.stat strong{font-size:13px}.stat small{font-size:8px}.right hr{margin:6px 0}.bottom{bottom:7px;width:calc(100vw - 16px);padding:5px;gap:3px}.bottom .btn{padding:7px 7px;font-size:10px}.tip{display:none}.toast{bottom:218px;max-width:92%}}
+@media(prefers-reduced-motion:reduce){.toast{transition:none}}
+
+.titlebar .version{color:#afe4cb}.compact{display:none}.right.collapsed #modeHint,.right.collapsed .stats,.right.collapsed hr,.right.collapsed #inspect,.right.collapsed .eyebrow:not(:first-child){display:none}
+@media(max-width:680px){.compact{display:block;padding:4px 6px!important;font-size:9px!important;margin-top:5px}.right.collapsed{width:122px}.right.collapsed h2{margin:0}}
+
+.topactions{display:none}.titlebar{min-width:240px}.footer-note{max-width:310px}
+
+#world:focus-visible{outline:3px solid #d4ffbf;outline-offset:-4px}
+
+.treePanel{margin-top:13px;padding-top:10px;border-top:1px solid #ffffff33}.treePanel h3{font-size:12px;margin:2px 0 9px}.treePanel label{display:block;font-size:11px;margin:7px 0;color:#d4e8de}.treePanel input{display:block;width:100%;accent-color:#a8e3b5}.treePanel output{float:right}.treePanel .btn{width:100%;font-size:10px;padding:8px;margin-top:6px}@media(max-width:680px){.treePanel{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding-top:5px}.treePanel h3{grid-column:1/-1;margin:0}.treePanel label{margin:0;font-size:9px}.treePanel .btn{grid-column:1/-1;margin:0;padding:5px}.side{max-height:265px}.tools{max-height:69px}}
+
+@media(min-width:941px){.side{top:128px;max-height:calc(100vh - 221px)}}
+@media(max-width:680px){.side{bottom:145px;max-height:min(36vh,300px)}}
+
+/* v1.6: help never leaves standalone HTML; keyboard reachable */
+.topactions{display:flex;max-width:34%}.topactions #help{white-space:nowrap}.bottom{max-width:calc(100vw - 12px)}@media(max-width:680px){.topactions{max-width:32%}.topactions #help{font-size:10px;padding:7px}}
+
+.worldbalance{font-size:12px;line-height:1.65;color:#dcf4e1;border-radius:8px;background:#153d3bb3;padding:8px}
+@media (scripting:none){html,body{overflow:auto!important;height:auto!important}body>*:not(noscript){display:none!important}}.nigin-nojs{box-sizing:border-box;width:calc(100% - 32px);max-width:34rem;margin:10vh auto;padding:20px 22px;border-radius:14px;background:#0f2b2c;color:#eef7f2;border:2px solid #9fe0c9;font:16px/1.55 system-ui,sans-serif}.nigin-nojs strong{display:block;font-size:20px;margin-bottom:8px}.nigin-nojs p{margin:8px 0 0}</style></head><body><noscript><div class="nigin-nojs" role="alert"><strong>NIGIN braucht JavaScript, um zu starten.</strong><p>Diese Ansicht führt keine Scripts aus – zum Beispiel die Vorschau der Dateien-App auf iPhone und iPad.</p><p>So geht es: die Datei über „Teilen“ in einem Browser oder einer HTML-Viewer-App öffnen, die JavaScript ausführt; am Computer die Datei direkt im Browser öffnen.</p><p>Die Welt läuft vollständig offline, es werden keine Daten gesendet.</p></div></noscript>
+<canvas id="world" tabindex="0" aria-label="Isometrische Rabenwerkstatt. Nach Fokus: Pfeiltasten Kachel wählen, Enter oder Leertaste baut. Tab führt zu Werkzeugen."></canvas>
+<header class="top"><div class="titlebar veil"><div class="eyebrow">NIGIN · SPIELLINIE B</div><h1>Rabenwerkstatt <span class="version">1.8</span></h1><small>Welt gestalten · Lebensräume beleben · unabhängig spielen</small></div><nav class="topactions"><button type="button" class="btn" id="help">Anleitung</button></nav></header>
+<aside class="side veil" id="toolPanel"><h2>Welt gestalten</h2><p>Der Rabe lenkt die Übersicht und die Werkzeuge. Bauen und Beleben sind eine eigenständige Spiellinie.</p><div class="section">WERKZEUGKASTEN</div><div class="tools" id="tools" role="group" aria-label="Bauwerkzeuge"></div>
+<div class="treePanel"><h3>Baumgenerator · 3 Arten</h3><label>Höhe <output id="valueheight">3</output><input type="range" id="treeHeight" min="1" max="5" step="1" value="3"></label>
+<label>Krone <output id="valuespread">3</output><input type="range" id="treeSpread" min="1" max="5" step="1" value="3"></label>
+<label>Äste <output id="valuedensity">3</output><input type="range" id="treeDensity" min="1" max="5" step="1" value="3"></label>
+<button id="retune" class="btn" type="button">Gewählten Baum anpassen</button></div></aside>
+<aside class="right veil"><div class="eyebrow">WELTENBAU</div><h2 id="modeTitle">Rabe · Welten gestalten</h2><button id="inspectorToggle" class="btn compact" type="button" aria-expanded="true" aria-controls="modeHint">Details ausblenden</button><p id="modeHint">Welt formen.</p><div class="stats"><div class="stat"><strong id="countCells">784</strong><small>Kacheln</small></div><div class="stat"><strong id="countEntities">2</strong><small>Tiere</small></div><div class="stat"><strong id="countAwake">0</strong><small>aktiv</small></div><div class="stat"><strong id="tick">0</strong><small>Schritte</small></div></div><hr><div class="eyebrow">WELTBILANZ</div><p class="worldbalance" id="worldBalance" aria-live="off">Umwelt wird berechnet.</p><hr><div class="eyebrow">INSPEKTOR</div><p id="inspect">Noch keine Kachel ausgewählt.</p></aside>
+<div class="bottom veil" role="toolbar" aria-label="Weltaktionen"><button id="run" class="btn">Beleben ▶</button><button id="undo" class="btn">↶ Rückgängig</button><button id="redo" class="btn">↷ Wiederholen</button><button id="zoomIn" class="btn" aria-label="Vergrößern">＋</button><button id="zoomOut" class="btn" aria-label="Verkleinern">−</button><button id="recenter" class="btn" aria-label="Ansicht zentrieren">⌖</button><button id="export" class="btn">JSON speichern</button><button id="imageExport" class="btn" title="Aktuelle Weltansicht als Bild speichern">PNG-Bild</button><button id="balanceExport" class="btn" type="button" title="Nur aggregierte Weltwerte, keine persönlichen Daten">Bilanz CSV</button><button id="import" class="btn">Laden</button><button id="reset" class="btn">Neu</button><input id="loadfile" type="file" accept=".json,application/json" aria-label="Spielstand importieren"></div>
+<div class="footer-note">Eine eigenständige, lokale 2,5D-Werkstatt · getrennt von Spiellinie A</div><div class="tip">Klick: bauen · Pfeile/Enter im Spielfeld: Tastaturbau · Rad: Zoom · Leertaste sonst: Simulation</div>
+<div id="toast" role="status" aria-live="polite" class="toast"></div>
+<section class="modal" id="welcome"><div class="dialog veil"><div class="eyebrow">SPIELLINIE B / EIGENSTÄNDIG</div><h2>Die Rabenwerkstatt.</h2><p>Gestalte aus der Vogelperspektive Landschaft, parametrische Bäume, Häuser, Tiere und Lebensräume. Aktiviere Tiere gezielt und beobachte eine einfache, regelbasierte Lebenssimulation. Die Bauwelt bleibt <strong>unabhängig</strong> vom Spiel mit Fuchs, Rabe und Geist.</p><p>Entwicklungsstand: isometrischer 2,5D-Prototyp, keine reale Ökologie und kein vollwertiger 3D-Minecraft-Baukasten.</p><button class="btn active" id="enter">Werkstatt öffnen</button></div></section>
+<script>'use strict';(()=>{
+const $=id=>document.getElementById(id),C=$('world');let ctx=C.getContext('2d',{alpha:false});
+if(!ctx){$('modaltext').textContent='Canvas ist nicht verfügbar.';return;}
+const SIZE=28,W=48,H=25,MAX_ENTITIES=90,MAX_SAVE=1024*1024,TOOLSET=[
+ ['grass','🌿','Wiese'],['soil','🟫','Erde'],['water','💧','Wasser'],['raise','⬆','Erhöhen'],['lower','⬇','Senken'],['oak','🌳','Laubbaum'],['pine','🌲','Nadelbaum'],['birch','🌳','Birke'],['flower','🌼','Blumen'],['rock','🪨','Felsen'],['house','⌂','Haus'],['lamp','✦','Licht'],['rabbit','🐇','Hase'],['deer','🦌','Reh'],['awaken','✧','Beleben'],['erase','⌫','Entfernen']];
+const GROUND=new Set(['grass','soil','water']),OBJECTS=new Set(['oak','pine','birch','flower','rock','house','lamp']),ANIMALS=new Set(['rabbit','deer']);
+const rand=(x,z,seed=731)=>{let s=(Math.imul(x+37,73856093)^Math.imul(z+83,19349663)^Math.imul(seed,83492791))>>>0;s^=s<<13;s^=s>>>17;s^=s<<5;return (s>>>0)/4294967296};
+const TREES=new Set(['oak','pine','birch']);
+const TREE_REVISION=1,SIMULATION_REVISION=2;
+const baseResource=c=>c.ground==='water'?20:c.item==='flower'?15:c.ground==='grass'?10:0;
+const resourceLimit=c=>c.ground==='water'?20:c.item==='flower'?15:c.ground==='grass'?10:0;
+const isTree=k=>TREES.has(k);
+const seedFor=(x,z,species)=>((Math.imul(x+41,73856093)^Math.imul(z+73,19349663)^Math.imul(({oak:1,pine:2,birch:3})[species]||1,83492791))>>>0)||1;
+const defaultGen=(x,z,species)=>({seed:seedFor(x,z,species),height:3,spread:3,density:3,generatorRevision:TREE_REVISION});
+const validGenV2=g=>!!g&&Object.getPrototypeOf(g)===Object.prototype&&Object.keys(g).sort().join(',')==='density,height,seed,spread'&&Number.isSafeInteger(g.seed)&&g.seed>=1&&g.seed<=4294967295&&['height','spread','density'].every(k=>Number.isInteger(g[k])&&g[k]>=1&&g[k]<=5);
+const validGen=g=>!!g&&Object.getPrototypeOf(g)===Object.prototype&&Object.keys(g).sort().join(',')==='density,generatorRevision,height,seed,spread'&&g.generatorRevision===TREE_REVISION&&validGenV2({seed:g.seed,height:g.height,spread:g.spread,density:g.density});
+// Pure bounded 3D skeleton, 3 species, deterministic seed. Inspired by recursive branch systems;
+// NOT a full biological growth or the space-colonization algorithm.
+function generateTree(spec,species='oak'){
+ if(!isTree(species)||!validGen(spec))throw Error('Baumparameter ungültig');
+ let value=spec.seed>>>0;const rnd=()=>{value^=value<<13;value^=value>>>17;value^=value<<5;return (value>>>0)/4294967296;};
+ const H=1.9+spec.height*.48,N=[{id:0,parent:-1,x:0,y:0,z:0,width:.22}],leaves=[];
+ const add=(parent,x,y,z,width)=>{const id=N.length;N.push({id,parent,x,y,z,width});return id;};
+ let last=0;for(let i=1;i<=4;i++)last=add(last,0,H*i/4,0,.21*(1-i/5));
+ const layers=species==='pine'?5:species==='birch'?4:3;
+ const spread=.22+spec.spread*.16,dens=spec.density+1;
+ function sprout(parent,x,y,z,len,azimuth,tilt,depth){if(N.length>180)return;
+   const dx=Math.cos(azimuth)*Math.sin(tilt)*len,dz=Math.sin(azimuth)*Math.sin(tilt)*len,dy=Math.cos(tilt)*len;
+   const end=add(parent,x+dx,y+dy,z+dz,Math.max(.008,depth*.022));
+   if(depth<=0||N.length>170){leaves.push(end);return;}
+   const branches=depth>=2?2:1;
+   for(let j=0;j<branches;j++)sprout(end,N[end].x,N[end].y,N[end].z,len*(.61+.10*rnd()),azimuth+(j?1:-1)*(.5+.42*rnd()),tilt*(.90+.20*rnd()),depth-1);
+ }
+ for(let l=0;l<layers;l++){let y=H*(species==='pine'?.26:.46)+(H*.51)*(l/Math.max(1,layers-1));let parent=Math.max(1,Math.round(y/H*4));
+  for(let j=0;j<dens;j++){const azi=2*Math.PI*(j/dens)+(l*.78)+(rnd()-.5)*.28;
+   const tilt=species==='pine'?1.19:species==='birch'?.48:.91;
+   const length=(species==='pine'?(1-l/layers)*.94+.2:.66+.20*rnd())*spread;
+   sprout(parent,0,y,0,length,azi,tilt+(rnd()-.5)*.22,species==='oak'?3:2);
+  }
+ }
+ if(N.length>200)throw Error('Baumgraph überschreitet Budget');
+ return {nodes:N,leaves};
+}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),key=(x,z)=>z*SIZE+x,within=(x,z)=>Number.isInteger(x)&&Number.isInteger(z)&&x>=0&&x<SIZE&&z>=0&&z<SIZE;
+const state={tool:'oak',zoom:1,panX:0,panY:0,tick:0,playing:false,selected:null,pins:[],world:[],entities:[],nextId:1,history:[],future:[],pointer:null,dragging:false,focus:false,frame:0,treeParams:{height:3,spread:3,density:3}};
+const newCell=(x,z)=>{const creek=Math.abs(z-(x*.46+4+1.3*Math.sin(x*.4)))<1.05;const r=rand(x,z);const item=!creek&&r>.94?'oak':(!creek&&r<.028?'flower':null);const c={ground:creek?'water':'grass',height:creek?0:Math.floor(rand(x,z,11)*2),item,age:1};return {...c,resource:baseResource(c),...(isTree(item)?{gen:defaultGen(x,z,item)}:{})};};
+function makeWorld(){state.world=Array.from({length:SIZE*SIZE},(_,i)=>newCell(i%SIZE,Math.floor(i/SIZE)));state.entities=[{id:1,kind:'rabbit',x:12,z:15,awake:false,energy:80},{id:2,kind:'deer',x:20,z:16,awake:false,energy:80}];state.nextId=3;state.tick=0;state.pins=[];state.selected=null;state.history=[];state.future=[];state.playing=false;sync();}
+const cell=(x,z)=>state.world[key(x,z)];const entityAt=(x,z)=>state.entities.find(e=>e.x===x&&e.z===z);
+function passable(x,z){if(!within(x,z))return false;const c=cell(x,z);return c.ground!=='water'&&c.item!=='house'&&!entityAt(x,z);}
+const cloneCell=c=>({...c,...(c.gen?{gen:{...c.gen}}:{})});
+const snap=()=>({world:state.world.map(cloneCell),entities:state.entities.map(e=>({...e})),tick:state.tick,nextId:state.nextId,pins:state.pins.map(p=>({...p}))});
+function restore(s){state.world=s.world.map(cloneCell);state.entities=s.entities.map(e=>({...e}));state.tick=s.tick;state.nextId=s.nextId;state.pins=s.pins.map(p=>({...p}));state.selected=null;sync()}
+// Lokale Delta-Kommandos. Nur die bearbeitete Kachel, maximal eine Entity und der ID-Zähler.
+let pending=null;
+function capture(x,z){const ent=entityAt(x,z),idx=ent?state.entities.indexOf(ent):-1;return {cell:cloneCell(cell(x,z)),entity:ent?{...ent}:null,entityIndex:idx,nextId:state.nextId};}
+function setPatch(x,z,patch){state.world[key(x,z)]=cloneCell(patch.cell);
+ const current=entityAt(x,z);if(current)state.entities.splice(state.entities.indexOf(current),1);
+ if(patch.entity)state.entities.splice(Math.min(patch.entityIndex,state.entities.length),0,{...patch.entity});
+ state.nextId=patch.nextId;
+}
+function record(x,z){if(pending)throw Error('Nicht abgeschlossenes Kommando');pending={x,z,before:capture(x,z)};}
+function commit(x,z){if(!pending||pending.x!==x||pending.z!==z)throw Error('Kommando-Grenze verletzt');
+ const cmd={...pending,after:capture(x,z)};pending=null;
+ if(JSON.stringify(cmd.before)===JSON.stringify(cmd.after))return false;
+ state.history.push(cmd);if(state.history.length>512)state.history.shift();state.future=[];return true;}
+function undo(){if(!state.history.length)return;state.playing=false;const cmd=state.history.pop();setPatch(cmd.x,cmd.z,cmd.before);state.future.push(cmd);sync();toast('Rückgängig')}
+function redo(){if(!state.future.length)return;state.playing=false;const cmd=state.future.pop();setPatch(cmd.x,cmd.z,cmd.after);state.history.push(cmd);sync();toast('Wiederhergestellt')}
+function applyTool(x,z,t=state.tool){if(!within(x,z)||!TOOLSET.some(v=>v[0]===t))return false;const c=cell(x,z),ent=entityAt(x,z);let changed=false;
+ if(t==='awaken'){if(ent&&!ent.awake){record(x,z);ent.awake=true;changed=true;toast('Lebewesen aktiviert: '+(ent.kind==='rabbit'?'Hase':'Reh'))}else toast('Hier ist kein schlafendes Tier.');}
+ else if(t==='erase'){if(ent||c.item){record(x,z);if(ent)state.entities.splice(state.entities.indexOf(ent),1);else {c.item=null;delete c.gen;c.resource=baseResource(c);}changed=true;}}
+ else if(t==='raise'||t==='lower'){let val=clamp(c.height+(t==='raise'?1:-1),0,4);if(val!==c.height&&c.ground!=='water'){record(x,z);c.height=val;changed=true;}}
+ else if(GROUND.has(t)){if((c.ground!==t||t==='water'&&c.item)&&!(t==='water'&&ent)){record(x,z);c.ground=t;if(t==='water'){c.height=0;c.item=null;delete c.gen;}c.resource=baseResource(c);changed=true;}}
+ else if(ANIMALS.has(t)){if(passable(x,z)&&state.entities.length<MAX_ENTITIES){record(x,z);state.entities.push({id:state.nextId++,kind:t,x,z,awake:false,energy:80});changed=true;}else toast('Hier kann kein Tier platziert werden.');}
+ else if(OBJECTS.has(t)&&c.ground!=='water'&&!ent){
+   const spec=isTree(t)?{seed:seedFor(x,z,t),...state.treeParams,generatorRevision:TREE_REVISION}:null;
+   if(c.item!==t||isTree(t)&&JSON.stringify(c.gen)!==JSON.stringify(spec)){
+     record(x,z);c.item=t;c.age=0;if(spec)c.gen=spec;else delete c.gen;c.resource=baseResource(c);changed=true;
+   }
+ }
+ if(changed){commit(x,z);sync();}else if(pending)throw Error('Unvollständiges Kommando');return changed;
+}
+function step(quiet=false){if(state.tick>=1e7){state.playing=false;if(!quiet)toast('Maximalzahl an Simulationsschritten erreicht.');return false;}
+ // Timeline boundary: editor commands must not be applied to a later simulation tick.
+ if(state.history.length||state.future.length){state.history=[];state.future=[];pending=null;}state.tick++;
+ // Canonical order prevents replay outcome from depending on array insertion order.
+ for(const e of [...state.entities].sort((a,b)=>a.id-b.id)){
+  if(!e.awake)continue;
+  const forage=cell(e.x,e.z),water=[[1,0],[-1,0],[0,1],[0,-1]].map(([dx,dz])=>[e.x+dx,e.z+dz]).find(([x,z])=>within(x,z)&&cell(x,z).ground==='water'&&cell(x,z).resource>0);
+  let gained=0;
+  if((forage.ground==='grass'||forage.item==='flower')&&forage.resource>0){forage.resource--;gained+=2;}
+  if(water){cell(water[0],water[1]).resource--;gained+=1;}
+  e.energy=clamp(e.energy-1+gained,0,100);
+  if(e.energy===0)continue;
+  const r=rand(e.id,state.tick),moves=[[1,0],[-1,0],[0,1],[0,-1],[0,0]],m=moves[Math.floor(r*moves.length)],nx=e.x+m[0],nz=e.z+m[1];
+  if(passable(nx,nz)){e.x=nx;e.z=nz;}
+ }
+ // Local deterministic replenishment. Consumption never creates a resource.
+ if(state.tick%8===0)for(const c of state.world){const limit=resourceLimit(c);c.resource=clamp(c.resource+(limit>0?1:0),0,limit);}
+ if(state.tick%5===0)for(const c of state.world){if(isTree(c.item))c.age=clamp(c.age+1,0,20);}
+ if(!quiet)sync();return true;
+}
+function saveObject(){return {kind:'nigin-raven-workshop',version:3,simulationRevision:SIMULATION_REVISION,size:SIZE,seed:731,tick:state.tick,nextId:state.nextId,pins:state.pins.map(p=>({...p})),cells:state.world.map(cloneCell),entities:state.entities.map(e=>({...e}))};}
+function validInt(n,min,max){return Number.isSafeInteger(n)&&n>=min&&n<=max;}
+function validateV1(s){if(!s||typeof s!=='object'||Array.isArray(s)||s.kind!=='nigin-raven-workshop'||s.version!==1||s.size!==SIZE||s.seed!==731||!validInt(s.tick,0,1e7)||!validInt(s.nextId,1,1e6))throw Error('Format/Version unzulässig');
+ if(!Array.isArray(s.cells)||s.cells.length!==SIZE*SIZE||!Array.isArray(s.entities)||s.entities.length>MAX_ENTITIES||!Array.isArray(s.pins)||s.pins.length>30)throw Error('Datenumfang/Position ungültig');
+ for(const c of s.cells){if(!c||typeof c!=='object'||!GROUND.has(c.ground)||!validInt(c.height,0,4)||!validInt(c.age,0,20)||!(c.item===null||OBJECTS.has(c.item))||c.ground==='water'&&(c.height!==0||c.item!==null))throw Error('Ungültige Geländedaten');}
+ const get=(x,z)=>s.cells[key(x,z)];
+ const ids=new Set(),locations=new Set();let highest=0;for(const e of s.entities){if(!e||typeof e!=='object'||!validInt(e.id,1,1e6)||ids.has(e.id)||!ANIMALS.has(e.kind)||!within(e.x,e.z)||typeof e.awake!=='boolean'||!validInt(e.energy,0,100)||get(e.x,e.z).ground==='water'||get(e.x,e.z).item==='house'||locations.has(key(e.x,e.z)))throw Error('Ungültige Tierdaten');ids.add(e.id);locations.add(key(e.x,e.z));highest=Math.max(highest,e.id)}
+ if(s.nextId<=highest)throw Error('ID-Zähler inkonsistent');for(const p of s.pins){if(!p||!within(p.x,p.z))throw Error('Ungültige Markierung');}
+ return true;}
+function upgradeSave(s){
+ if(s?.version===3){validate(s);return s;}
+ if(s?.version===2){validateV2(s);return { ...s,version:3,simulationRevision:SIMULATION_REVISION,
+  cells:s.cells.map(c=>({ ...c,resource:baseResource(c),...(isTree(c.item)?{gen:{...c.gen,generatorRevision:TREE_REVISION}}:{}) }))};}
+ if(s?.version!==1)throw Error('Unbekannte Speicherversion');
+ if(!s||Object.getPrototypeOf(s)!==Object.prototype||Object.keys(s).sort().join(',')!=='cells,entities,kind,nextId,pins,seed,size,tick,version')throw Error('Altes Format mit Zusatzfeldern');
+ validateV1(s);
+ if(s.cells.some(c=>!c||Object.keys(c).sort().join(',')!=='age,ground,height,item'||c.item==='birch'))throw Error('Alte Kacheldaten unzulässig');
+ return {...s,version:3,simulationRevision:SIMULATION_REVISION,
+  cells:s.cells.map((c,i)=>({...c,resource:baseResource(c),...(isTree(c.item)?{gen:defaultGen(i%SIZE,Math.floor(i/SIZE),c.item)}:{})}))};
+}
+function validateV2(s){
+ if(!s||Object.getPrototypeOf(s)!==Object.prototype||Object.keys(s).sort().join(',')!=='cells,entities,kind,nextId,pins,seed,size,tick,version'||s.kind!=='nigin-raven-workshop'||s.version!==2||s.size!==SIZE||s.seed!==731||!validInt(s.tick,0,1e7)||!validInt(s.nextId,1,1e6))throw Error('V2-Hülle unzulässig');
+ if(!Array.isArray(s.cells)||s.cells.length!==SIZE*SIZE||!Array.isArray(s.entities)||s.entities.length>MAX_ENTITIES||!Array.isArray(s.pins)||s.pins.length>30)throw Error('V2-Datenumfang ungültig');
+ for(const c of s.cells){if(!c||Object.getPrototypeOf(c)!==Object.prototype||Object.keys(c).sort().join(',')!==(isTree(c.item)?'age,gen,ground,height,item':'age,ground,height,item')||!GROUND.has(c.ground)||!validInt(c.height,0,4)||!validInt(c.age,0,20)||!(c.item===null||OBJECTS.has(c.item))||c.ground==='water'&&(c.height!==0||c.item!==null)||isTree(c.item)&&!validGenV2(c.gen))throw Error('V2-Kachel ungültig');}
+ const ids=new Set(),places=new Set();let highest=0;
+ for(const e of s.entities){if(!e||Object.getPrototypeOf(e)!==Object.prototype||Object.keys(e).sort().join(',')!=='awake,energy,id,kind,x,z'||!validInt(e.id,1,1e6)||ids.has(e.id)||!ANIMALS.has(e.kind)||!within(e.x,e.z)||typeof e.awake!=='boolean'||!validInt(e.energy,0,100)||s.cells[key(e.x,e.z)].ground==='water'||s.cells[key(e.x,e.z)].item==='house'||places.has(key(e.x,e.z)))throw Error('V2-Tierdaten ungültig');ids.add(e.id);places.add(key(e.x,e.z));highest=Math.max(highest,e.id);}
+ if(s.nextId<=highest)throw Error('V2-ID inkonsistent');for(const p of s.pins)if(!p||Object.getPrototypeOf(p)!==Object.prototype||Object.keys(p).sort().join(',')!=='x,z'||!within(p.x,p.z))throw Error('V2-Markierung ungültig');
+ return true;
+}
+function validate(s){
+ if(!s||Object.getPrototypeOf(s)!==Object.prototype||Object.keys(s).sort().join(',')!=='cells,entities,kind,nextId,pins,seed,simulationRevision,size,tick,version'||s.kind!=='nigin-raven-workshop'||s.version!==3||s.simulationRevision!==SIMULATION_REVISION||s.size!==SIZE||s.seed!==731||!validInt(s.tick,0,1e7)||!validInt(s.nextId,1,1e6))throw Error('V3-Hülle unzulässig');
+ if(!Array.isArray(s.cells)||s.cells.length!==SIZE*SIZE||!Array.isArray(s.entities)||s.entities.length>MAX_ENTITIES||!Array.isArray(s.pins)||s.pins.length>30)throw Error('V3-Datenumfang ungültig');
+ for(const c of s.cells){if(!c||Object.getPrototypeOf(c)!==Object.prototype||Object.keys(c).sort().join(',')!==(isTree(c.item)?'age,gen,ground,height,item,resource':'age,ground,height,item,resource')||!GROUND.has(c.ground)||!validInt(c.height,0,4)||!validInt(c.age,0,20)||!(c.item===null||OBJECTS.has(c.item))||c.ground==='water'&&(c.height!==0||c.item!==null)||!validInt(c.resource,0,resourceLimit(c))||isTree(c.item)&&!validGen(c.gen))throw Error('V3-Kachel ungültig');}
+ const ids=new Set(),places=new Set();let highest=0;
+ for(const e of s.entities){if(!e||Object.getPrototypeOf(e)!==Object.prototype||Object.keys(e).sort().join(',')!=='awake,energy,id,kind,x,z'||!validInt(e.id,1,1e6)||ids.has(e.id)||!ANIMALS.has(e.kind)||!within(e.x,e.z)||typeof e.awake!=='boolean'||!validInt(e.energy,0,100)||s.cells[key(e.x,e.z)].ground==='water'||s.cells[key(e.x,e.z)].item==='house'||places.has(key(e.x,e.z)))throw Error('V3-Tierdaten ungültig');ids.add(e.id);places.add(key(e.x,e.z));highest=Math.max(highest,e.id);}
+ if(s.nextId<=highest)throw Error('V3-ID inkonsistent');for(const p of s.pins)if(!p||Object.getPrototypeOf(p)!==Object.prototype||Object.keys(p).sort().join(',')!=='x,z'||!within(p.x,p.z))throw Error('V3-Markierung ungültig');
+ return true;
+}
+function applySave(raw){const s=upgradeSave(raw);validate(s);state.playing=false;state.world=s.cells.map(c=>({...c,...(c.gen?{gen:{...c.gen}}:{})}));state.entities=s.entities.map(e=>({...e}));state.tick=s.tick;state.nextId=s.nextId;state.pins=s.pins.map(p=>({...p}));state.history=[];state.future=[];pending=null;state.selected=null;state.focus=false;sync();}
+function exportImage(){
+ // Export exactly the currently rendered canvas, without browser overlays or a network request.
+ if(!C.toBlob){toast('PNG-Ausgabe wird von diesem Browser nicht unterstützt.');return;}
+ C.toBlob(blob=>{if(!blob){toast('PNG-Ausgabe fehlgeschlagen.');return;}
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Nigin_Rabenwerkstatt_Welt.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);toast('Weltansicht als PNG exportiert.');},'image/png');
+}
+function download(){const data=JSON.stringify(saveObject());const a=document.createElement('a');const url=URL.createObjectURL(new Blob([data],{type:'application/json'}));a.href=url;a.download='Nigin_Rabenwerkstatt_Welt.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);toast('Spielstand exportiert.');}
+async function importFile(file){if(!file)return;if(file.size>MAX_SAVE)throw Error('Spielstand über 1 MB');const data=JSON.parse(await file.text());
+ let converted=data;
+ if(data?.kind==='nigin-worldlab'&&data.version===1){
+   if(!['fox','raven','spirit'].includes(data.mode)||!data.fox||!within(data.fox.x,data.fox.z)||!Array.isArray(data.cells)||data.cells.length!==SIZE*SIZE)throw Error('Alter Spielstand ohne gültige Herkunft');
+   if(!confirm('v0.7-Spielstand in die eigenständige Rabenwerkstatt konvertieren? Die Figurposition und Figurenwahl werden nicht übernommen.'))return;
+   converted={kind:'nigin-raven-workshop',version:1,size:data.size,seed:data.seed,tick:data.tick,nextId:data.nextId,pins:data.pins,cells:data.cells,entities:data.entities};
+ }
+ applySave(converted);toast(data===converted?'Spielstand geprüft und geladen.':'Alter v0.7-Spielstand erfolgreich konvertiert.');}
+function toast(message){const e=$('toast');e.textContent=message;e.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>e.classList.remove('show'),2800)}
+function worldBalance(){
+ const n={water:0,forest:0,house:0,totalResources:0};
+ for(const c of state.world){if(c.ground==='water')n.water++;if(isTree(c.item))n.forest++;if(c.item==='house')n.house++;n.totalResources+=c.resource||0;}
+ return {...n,animals:state.entities.length,awake:state.entities.filter(e=>e.awake).length};
+}
+
+// A compact report for independent world reproducibility checks. No user text is copied into CSV.
+const BALANCE_KEYS=['water','forest','house','animals','awake','totalResources'];
+function balanceCSV(){
+ const n=worldBalance();
+ const rows=[['metric','value'],['save_version',3],['simulation_revision',SIMULATION_REVISION],['world_seed',731],['tick',state.tick],['grid_cells',SIZE*SIZE]];
+ for(const key of BALANCE_KEYS){if(!Number.isSafeInteger(n[key])||n[key]<0)throw Error('Ungültiger Statistikwert');rows.push([key,n[key]]);}
+ // ASCII-only, static metric identifiers and integer values; no formula injection vectors.
+ return rows.map(([a,b])=>a+','+String(b)).join('\r\n')+'\r\n';
+}
+function exportBalance(){
+ const url=URL.createObjectURL(new Blob([balanceCSV()],{type:'text/csv;charset=utf-8'}));
+ const a=document.createElement('a');a.href=url;a.download='Nigin_Rabenwerkstatt_Weltbilanz.csv';a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),3000);toast('Weltbilanz als CSV exportiert.');
+}
+function sync(){ layerState.dirty=true;
+ const n=worldBalance();$('worldBalance').textContent=`Wasser ${n.water} · Bäume ${n.forest} · Häuser ${n.house} · Tiere ${n.animals} (${n.awake} aktiv) · Vorräte ${n.totalResources}`; $('toolPanel').hidden=false;$('modeHint').textContent='Kachel anklicken: gewähltes Werkzeug anwenden. Tiere gezielt beleben und Simulation starten. Ziehen verschiebt die Raben-Kamera. Mausrad zoomt.';
+ $('modeTitle').textContent='Rabe · Welten gestalten';$('countCells').textContent=SIZE*SIZE;$('countEntities').textContent=state.entities.length;$('countAwake').textContent=state.entities.filter(e=>e.awake).length;$('tick').textContent=state.tick;$('run').textContent=state.playing?'Pause':'Beleben ▶';$('undo').disabled=!state.history.length;$('redo').disabled=!state.future.length;
+ for(const b of document.querySelectorAll('[data-tool]')){b.classList.toggle('active',b.dataset.tool===state.tool);b.setAttribute('aria-pressed',String(b.dataset.tool===state.tool));}
+ const p=state.selected;if(p){const c=cell(p.x,p.z),e=entityAt(p.x,p.z);$('inspect').textContent=`Kachel ${p.x}/${p.z} · ${c.ground}, Höhe ${c.height}`+(c.item?' · '+c.item:'')+` · Vorrat ${c.resource}`+(c.gen?' · H'+c.gen.height+' / Krone '+c.gen.spread+' / Äste '+c.gen.density:'')+(e?` · ${e.kind} (${e.awake?'aktiv':'ruhend'}, Energie ${e.energy})`:'');}else $('inspect').textContent='Noch keine Kachel ausgewählt.';
+}
+const safeRatio=()=>Math.min(2,devicePixelRatio||1);let vw=0,vh=0,pixelRatio=1;const MAX_CANVAS_PIXELS=2100000;
+const layer=document.createElement('canvas'),layerCtx=layer.getContext('2d',{alpha:false});
+const layerState={dirty:true,repaints:0,draws:0,panX:NaN,panY:NaN,zoom:NaN,width:0,height:0};
+function resize(){layerState.dirty=true;vw=Math.max(1,innerWidth);vh=Math.max(1,innerHeight);
+ pixelRatio=Math.max(.25,Math.min(safeRatio(),Math.sqrt(MAX_CANVAS_PIXELS/(vw*vh))));
+ C.width=Math.max(1,Math.round(vw*pixelRatio));C.height=Math.max(1,Math.round(vh*pixelRatio));ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+ if(!state.focus){state.panX=vw*.50;state.panY=vh*.15;state.focus=true;}}
+function center(x,z,height=0){return {x:state.panX+(x-z)*W*.5*state.zoom,y:state.panY+(x+z)*H*.5*state.zoom-height*H*.6*state.zoom};}
+function polygon(points,color,stroke){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(...points[i]);ctx.closePath();ctx.fillStyle=color;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=.75;ctx.stroke();}}
+function diamond(x,z,h){const p=center(x,z,h),w=W*.5*state.zoom,hh=H*.5*state.zoom;return [[p.x,p.y-hh],[p.x+w,p.y],[p.x,p.y+hh],[p.x-w,p.y]];}
+// Hand-authored stylised material palette. Deterministic micro-details; simulation unchanged.
+function tile(x,z,c){
+ const d=diamond(x,z,c.height),p=center(x,z,c.height),base=center(x,z,0);
+ const palettes={grass:['#879f77','#78956d','#95a985','#79966f'],soil:['#ba9976','#ab8769','#c0a080','#a6846c'],water:['#4c99ab','#478ea9','#5da6b4','#418d9f']};
+ let col=palettes[c.ground][Math.floor(rand(x,z)*4)],drop=base.y-p.y,s=state.zoom;
+ if(drop>.1){polygon([d[1],d[2],[d[2][0],d[2][1]+drop],[d[1][0],d[1][1]+drop]],'#607b63');polygon([d[2],d[3],[d[3][0],d[3][1]+drop],[d[2][0],d[2][1]+drop]],'#486957');
+ // Narrow strata underline the elevation without creating a costly 3D mesh.
+ if(drop>8*s){ctx.strokeStyle='#98ad8477';ctx.lineWidth=1*s;ctx.beginPath();ctx.moveTo(d[2][0],d[2][1]+drop*.64);ctx.lineTo(d[3][0],d[3][1]+drop*.64);ctx.stroke();}}
+ polygon(d,col,'#193a3020');
+ if(c.ground==='water'){
+  ctx.save();ctx.beginPath();ctx.moveTo(...d[0]);for(let i=1;i<4;i++)ctx.lineTo(...d[i]);ctx.closePath();ctx.clip();
+  const wave=0; // Static layer: moving glints are drawn separately below.
+  for(let i=0;i<2;i++){ctx.strokeStyle=i===0?'#b3e5e273':'#286b8d6c';ctx.lineWidth=(i===0?1.1:.75)*s;ctx.beginPath();ctx.moveTo(p.x-14*s+i*10*s+wave,p.y-3*s+i*3*s);
+   ctx.bezierCurveTo(p.x-8*s+i*10*s+wave,p.y-6*s+i*3*s,p.x+3*s+i*10*s+wave,p.y+1*s+i*3*s,p.x+13*s+i*10*s+wave,p.y-1*s+i*3*s);ctx.stroke();}
+  ctx.restore();
+ }else if(c.ground==='grass'){
+  const n=rand(x,z,9),q=rand(x,z,12);
+  if(n>.30){ctx.strokeStyle=q>.45?'#d5c9958c':'#537f60a3';ctx.lineWidth=.85*s;ctx.lineCap='round';for(let i=0;i<3;i++){
+   const sx=p.x+((i-1)*3+q*3)*s,sy=p.y+((i-1)*1.5+n*3)*s;
+   ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(sx+(i-1)*2.2*s,sy-(2.5+n*2)*s);ctx.stroke();}}
+  if(rand(x,z,91)>.985){ellipse(p.x+2*s,p.y-1*s,2.3*s,1.1*s,'#e3cfa1');}
+ }else if(rand(x,z,19)>.56){
+  ctx.fillStyle='#e6c5a56c';for(let i=0;i<3;i++)ctx.fillRect(p.x+(i*4-6)*s,p.y+(i%2?2:-2)*s,1.2*s,.8*s);
+ }
+ if(state.selected?.x===x&&state.selected?.z===z){polygon(d,'#d7fbb122','#eafdb7');}
+}
+function ellipse(x,y,rx,ry,color){ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,Math.max(.3,rx),Math.max(.3,ry),0,0,Math.PI*2);ctx.fill();}
+const treeCache=new Map();
+function tree(x,y,kind,age,gen){
+ if(!validGen(gen))return;
+ const key=kind+':'+JSON.stringify(gen);let graph=treeCache.get(key);
+ if(!graph){graph=generateTree(gen,kind);if(treeCache.size>128)treeCache.clear();treeCache.set(key,graph);}
+ const s=state.zoom*(.65+Math.min(age,20)*.024),project=n=>({x:x+(n.x-n.z*.50)*20*s,y:y-n.y*20*s+n.z*4*s});
+ // Grounding and branching: tree geometry is a view-only projection of the canonical graph.
+ ellipse(x+7*s,y+2*s,(kind==='pine'?13:18)*s,5.5*s,'#294b4260');
+ ctx.lineCap='round';for(let i=1;i<graph.nodes.length;i++){
+  const n=graph.nodes[i],p=graph.nodes[n.parent],a=project(n),b=project(p);
+  ctx.strokeStyle=kind==='birch'?'#e6ddca':kind==='pine'?'#695844':'#80614c';ctx.lineWidth=Math.max(.65,Math.min(5,15*n.width)*s);
+  ctx.beginPath();ctx.moveTo(b.x,b.y);ctx.lineTo(a.x,a.y);ctx.stroke();
+  if(kind==='birch'&&i%4===0){ctx.strokeStyle='#6e7465';ctx.lineWidth=.75*s;ctx.beginPath();ctx.moveTo(a.x-2*s,a.y);ctx.lineTo(a.x+2*s,a.y-1*s);ctx.stroke();}
+ }
+ // Clustered foliage: three tonal levels communicate volume in the same flat-shaded art direction.
+ const base=kind==='pine'?'#2f7161':kind==='birch'?'#a7c08e':'#568a6b';
+ const shade=kind==='pine'?'#245b55':kind==='birch'?'#7d9e79':'#3d725e';
+ const lit=kind==='pine'?'#609d82':kind==='birch'?'#d1d9a8':'#80aa7b';
+ for(let j=0;j<graph.leaves.length;j++){
+  const tip=graph.leaves[j],p=project(graph.nodes[tip]),drift=(j%5-2)*.85*s;
+  if(kind==='pine'){
+   polygon([[p.x,p.y-9*s],[p.x-5.8*s,p.y+6*s],[p.x+5.8*s,p.y+6*s]],shade);
+   polygon([[p.x,p.y-10*s],[p.x-3.4*s,p.y+3.2*s],[p.x+1.2*s,p.y+3.2*s]],j%3===0?lit:base);
+  }else{
+   const rx=(kind==='birch'?5.0:7.0)*s,ry=(kind==='birch'?5.9:5.6)*s;
+   ellipse(p.x+1.3*s,p.y+1.9*s,rx,ry,shade);
+   ellipse(p.x-1.1*s+drift,p.y-.9*s,rx*.84,ry*.82,base);
+   if(j%2===0)ellipse(p.x-2*s,p.y-3.2*s,rx*.47,ry*.4,lit);
+  }
+ }
+}
+
+// B2 vertical slice: a deterministic, bounded multi-part house recipe. It is a
+// render-only derived projection: world saves still store item='house'.
+function houseRecipe(x,z){
+ if(!within(x,z))throw Error('Haus ausserhalb der Welt');
+ const variant=Math.floor(rand(x,z,345)*3);
+ return {version:1,variant,parts:[
+  {role:'walls',kind:'box',width:1,height:1},
+  {role:'roof',kind:'gable',width:1,height:.55},
+  {role:'door',kind:'panel',width:.18,height:.55},
+  {role:'window-left',kind:'pane',width:.13,height:.16},
+  {role:'window-right',kind:'pane',width:.13,height:.16},
+  ...(variant===2?[{role:'chimney',kind:'column',width:.12,height:.28}]:[])
+ ]};
+}
+function drawObject(x,z,c){if(!c.item)return;const p=center(x,z,c.height),s=state.zoom,x0=p.x,y0=p.y-2*s;switch(c.item){case 'oak':case 'pine':case 'birch':tree(x0,y0,c.item,c.age,c.gen);break;case 'rock':ellipse(x0+4*s,y0+3*s,19*s,5*s,'#163b3750');ellipse(x0,y0,14*s,7*s,'#737e79');ellipse(x0-2*s,y0-5*s,10*s,4*s,'#adb5aa');ellipse(x0-5*s,y0-8*s,4*s,1*s,'#d7d5c2');break;case 'flower':for(let i=0;i<5;i++){let a=i*1.256;ellipse(x0+7*Math.cos(a)*s,y0-4*s+4*Math.sin(a)*s,4*s,4*s,i%2?'#eee9a5':'#f0b6cb');}ellipse(x0,y0-4*s,4*s,4*s,'#f2df6f');break;
+ case 'house':{
+  ellipse(x0+6*s,y0+4*s,24*s,7*s,'#173f385c');
+  // Render the parts in canonical recipe order, not a parallel ad-hoc house model.
+  const recipe=houseRecipe(x,z),b=15*s;
+  for(const part of recipe.parts){switch(part.role){
+   case 'walls':
+    polygon([[x0-b,y0],[x0,y0+6*s],[x0,y0-20*s],[x0-b,y0-27*s]],recipe.variant===1?'#d9bb95':'#cfae82');
+    polygon([[x0,y0+6*s],[x0+b,y0],[x0+b,y0-27*s],[x0,y0-20*s]],'#b08d67');break;
+   case 'roof':{
+    polygon([[x0-b-2*s,y0-27*s],[x0,y0-43*s],[x0+b+2*s,y0-27*s],[x0,y0-19*s]],recipe.variant===0?'#a86b57':'#756c72');
+    polygon([[x0-b-2*s,y0-27*s],[x0,y0-43*s],[x0,y0-19*s]],'#d49970a0');
+    ctx.strokeStyle='#f1bc918c';ctx.lineWidth=1.2*s;for(let j=1;j<4;j++){const f=j/4;
+     ctx.beginPath();ctx.moveTo(x0-b*s*0-2*s+(b+2*s)*f,y0-27*s-16*s*f);ctx.lineTo(x0+(b+2*s)*f,y0-19*s-8*s*f);ctx.stroke();}
+    break;}
+
+   case 'door':
+    polygon([[x0-2*s,y0-8*s],[x0+4*s,y0-5*s],[x0+4*s,y0+6*s],[x0-2*s,y0+3*s]],'#4d6057');
+    ellipse(x0+2*s,y0-2*s,1.25*s,1.25*s,'#f2cd89');break;
+   case 'window-left':
+    polygon([[x0-12*s,y0-22*s],[x0-7*s,y0-20*s],[x0-7*s,y0-14*s],[x0-12*s,y0-16*s]],'#83b2b7');
+    ctx.strokeStyle='#f2e1bd';ctx.lineWidth=1.25*s;ctx.beginPath();ctx.moveTo(x0-12*s,y0-19*s);ctx.lineTo(x0-7*s,y0-17*s);ctx.stroke();break;
+   case 'window-right':
+    polygon([[x0+7*s,y0-20*s],[x0+12*s,y0-22*s],[x0+12*s,y0-16*s],[x0+7*s,y0-14*s]],'#83b2b7');
+    ctx.strokeStyle='#f2e1bd';ctx.lineWidth=1.25*s;ctx.beginPath();ctx.moveTo(x0+7*s,y0-17*s);ctx.lineTo(x0+12*s,y0-19*s);ctx.stroke();break;
+   case 'chimney':
+    polygon([[x0+5*s,y0-36*s],[x0+5*s,y0-49*s],[x0+9*s,y0-49*s],[x0+9*s,y0-38*s]],'#967a70');break;
+  }}break;
+ }
+ case 'lamp':{ellipse(x0+4*s,y0+2*s,10*s,3*s,'#20473a60');ctx.fillStyle='#624f44';ctx.fillRect(x0-2*s,y0-27*s,4*s,25*s);ellipse(x0,y0-29*s,7*s,7*s,'#fbeeb2');ellipse(x0,y0-29*s,12*s,12*s,'#ffed9440');break;}
+}}
+function animalDraw(e){const p=center(e.x,e.z,cell(e.x,e.z).height);const x=p.x,y=p.y-5*state.zoom,s=state.zoom;ellipse(x,y+4*s,10*s,3*s,'#1a292b65');if(e.kind==='rabbit'){ellipse(x,y-7*s,9*s,6*s,'#d5cdb9');ellipse(x+5*s,y-16*s,3*s,9*s,'#cfc8ba');ellipse(x-1*s,y-16*s,3*s,9*s,'#b6ac9f');ellipse(x+6*s,y-8*s,1.4*s,1.4*s,'#233a3e');}else{ellipse(x,y-11*s,14*s,7*s,'#ad886e');ctx.strokeStyle='#655344';ctx.lineWidth=2.3*s;for(let dx of [-7,5]){ctx.beginPath();ctx.moveTo(x+dx*s,y-6*s);ctx.lineTo(x+(dx-1)*s,y+6*s);ctx.stroke()}ellipse(x+15*s,y-20*s,5*s,6*s,'#b49270');}if(e.awake){ellipse(x,y-38*s,3*s,3*s,'#b8f5c2');}}
+function ravenDraw(){const x=vw-195,y=105,s=.7;ctx.save();ctx.translate(x,y);ellipse(0,4,34,6,'#051b2366');polygon([[-21,0],[-38,-20],[-8,-8],[7,-2]],'#1d343d');polygon([[7,-2],[30,-23],[15,0],[-1,8]],'#243a42');ellipse(2,-1,11,7,'#192d38');polygon([[11,-4],[24,0],[11,3]],'#75858a');ellipse(6,-4,2,2,'#b7d9d8');ctx.restore()}
+function drawWorldLayer(){ctx.clearRect(0,0,vw,vh);const g=ctx.createLinearGradient(0,0,0,vh);g.addColorStop(0,'#173b4a');g.addColorStop(.43,'#618d88');g.addColorStop(1,'#bad1b2');ctx.fillStyle=g;ctx.fillRect(0,0,vw,vh);ctx.fillStyle='#204957a0';polygon([[0,vh*.54],[vw*.10,vh*.41],[vw*.24,vh*.56],[vw*.43,vh*.39],[vw*.64,vh*.54],[vw*.80,vh*.41],[vw,vh*.56],[vw,vh],[0,vh]],'#345e60');
+ polygon([[0,vh*.66],[vw*.16,vh*.49],[vw*.30,vh*.63],[vw*.57,vh*.46],[vw*.77,vh*.59],[vw,vh*.48],[vw,vh],[0,vh]],'#38665f');
+ const mist=ctx.createLinearGradient(0,vh*.26,0,vh*.88);mist.addColorStop(0,'#b5c9ad00');mist.addColorStop(.6,'#bed5b93b');mist.addColorStop(1,'#b5c9ad05');ctx.fillStyle=mist;ctx.fillRect(0,vh*.26,vw,vh*.62);
+ for(let sum=0;sum<=2*(SIZE-1);sum++)for(let x=0;x<SIZE;x++){const z=sum-x;if(z<0||z>=SIZE)continue;const c=cell(x,z),p=center(x,z,c.height);if(p.x< -90||p.x>vw+90||p.y< -150||p.y>vh+140)continue;tile(x,z,c);drawObject(x,z,c);const entity=entityAt(x,z);if(entity)animalDraw(entity);}
+ for(const p of state.pins){const q=center(p.x,p.z,cell(p.x,p.z).height);ellipse(q.x,q.y-19*state.zoom,6*state.zoom,6*state.zoom,'#f3d194');ctx.fillStyle='#ebfbe5';ctx.font=`${11*state.zoom}px system-ui`;ctx.fillText('⌖',q.x-5*state.zoom,q.y-16*state.zoom);}
+ }
+// Water motion is a visual overlay, independent from the cached terrain and world state.
+// Reduced-motion preference stops the oscillation; the glints remain stationary.
+let waterOverlayFrames=0,waterVisible=0,lastPresentation=-Infinity;
+const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+function waterOverlay(now){
+ const s=state.zoom,phase=reducedMotion.matches?0:now*.0014;
+ let visible=0;
+ ctx.save();ctx.lineCap='round';
+ for(let z=0;z<SIZE;z++)for(let x=0;x<SIZE;x++){
+  const c=cell(x,z);if(c.ground!=='water')continue;
+  const p=center(x,z,c.height);
+  if(p.x< -35||p.x>vw+35||p.y< -22||p.y>vh+22)continue;
+  visible++;
+  const wiggle=Math.sin(phase+x*.71+z*.43)*3*s;
+  ctx.strokeStyle='#d1f0e586';ctx.lineWidth=Math.max(.5,1.05*s);
+  ctx.beginPath();ctx.moveTo(p.x-9*s+wiggle,p.y-2*s);
+  ctx.quadraticCurveTo(p.x+wiggle,p.y-4*s,p.x+9*s+wiggle,p.y-1*s);
+  ctx.stroke();
+ }
+ ctx.restore();waterVisible=visible;waterOverlayFrames++;
+}
+function render(now=0){
+ requestAnimationFrame(render);
+ // Limit repeated full-canvas copies while preserving immediate redraw on edits.
+ const rebuild=layerState.dirty||layerState.width!==C.width||layerState.height!==C.height||layerState.panX!==state.panX||layerState.panY!==state.panY||layerState.zoom!==state.zoom;
+ if(!rebuild&&now-lastPresentation<33)return;
+ lastPresentation=now;
+ if(rebuild){
+   if(layer.width!==C.width||layer.height!==C.height){layer.width=C.width;layer.height=C.height;}
+   const display=ctx;ctx=layerCtx;ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+   try{drawWorldLayer();}finally{ctx=display;}
+   Object.assign(layerState,{dirty:false,width:C.width,height:C.height,panX:state.panX,panY:state.panY,zoom:state.zoom});layerState.repaints++;
+ }
+ ctx.drawImage(layer,0,0,vw,vh);waterOverlay(now);ravenDraw();layerState.draws++;
+ state.frame++;
+}
+function screenToCell(sx,sy){for(let sum=2*(SIZE-1);sum>=0;sum--)for(let x=SIZE-1;x>=0;x--){const z=sum-x;if(z<0||z>=SIZE)continue;const p=center(x,z,cell(x,z).height),u=Math.abs(sx-p.x)/(W*.5*state.zoom),v=Math.abs(sy-p.y)/(H*.5*state.zoom);if(u+v<=.96)return {x,z};}return null;}
+function interact(x,y){const p=screenToCell(x,y);if(!p)return;state.selected=p;applyTool(p.x,p.z);sync();}
+function onDown(e){if(e.button!==0&&e.pointerType==='mouse')return;C.setPointerCapture(e.pointerId);state.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false,panX:state.panX,panY:state.panY};}
+function onMove(e){const p=state.pointer;if(!p||p.id!==e.pointerId)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;if(Math.hypot(dx,dy)>7)p.moved=true;if(p.moved){state.panX=p.panX+dx;state.panY=p.panY+dy;}}
+function onUp(e){const p=state.pointer;if(!p||p.id!==e.pointerId)return;if(!p.moved)interact(e.clientX,e.clientY);state.pointer=null;}
+C.addEventListener('keydown',e=>{
+ if(!$('welcome').hidden)return;
+ const directions={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]};
+ if(Object.hasOwn(directions,e.key)){
+   e.preventDefault();const p=state.selected||{x:Math.floor(SIZE/2),z:Math.floor(SIZE/2)};
+   state.selected={x:clamp(p.x+directions[e.key][0],0,SIZE-1),z:clamp(p.z+directions[e.key][1],0,SIZE-1)};
+   const spot=center(state.selected.x,state.selected.z,cell(state.selected.x,state.selected.z).height);
+   if(spot.x<vw*.18||spot.x>vw*.82||spot.y<vh*.18||spot.y>vh*.82){state.panX+=vw*.5-spot.x;state.panY+=vh*.5-spot.y;}
+   sync();return;
+ }
+ if(e.key==='Enter'||e.code==='Space'){
+   e.preventDefault();if(!state.selected)state.selected={x:Math.floor(SIZE/2),z:Math.floor(SIZE/2)};
+   applyTool(state.selected.x,state.selected.z);sync();
+ }
+});
+C.addEventListener('pointerdown',onDown);C.addEventListener('pointermove',onMove);C.addEventListener('pointerup',onUp);C.addEventListener('pointercancel',()=>state.pointer=null);
+C.addEventListener('wheel',e=>{e.preventDefault();const before=state.zoom;state.zoom=clamp(before*(e.deltaY>0?.90:1.1),.38,2.4);const scale=state.zoom/before;state.panX=e.clientX+(state.panX-e.clientX)*scale;state.panY=e.clientY+(state.panY-e.clientY)*scale;},{passive:false});
+function zoomTo(dir){const before=state.zoom;state.zoom=clamp(before*dir,.38,2.4);const cx=vw/2,cy=vh/2,k=state.zoom/before;state.panX=cx+(state.panX-cx)*k;state.panY=cy+(state.panY-cy)*k;}
+$('zoomIn').onclick=()=>zoomTo(1.2);$('zoomOut').onclick=()=>zoomTo(.83);$('recenter').onclick=()=>{state.panX=vw*.5;state.panY=vh*.15;state.zoom=1;toast('Ansicht zentriert.');};
+$('undo').onclick=undo;$('redo').onclick=redo;$('balanceExport').onclick=exportBalance;$('export').onclick=download;$('imageExport').onclick=exportImage;$('import').onclick=()=>$('loadfile').click();$('loadfile').addEventListener('change',async e=>{try{await importFile(e.target.files?.[0]);}catch(err){toast('Import abgelehnt: '+err.message)}finally{e.target.value='';}});
+$('run').onclick=()=>{state.playing=!state.playing;sync();};$('reset').onclick=()=>{if(confirm('Welt auf Anfang zurücksetzen? Der aktuelle Spielstand geht verloren.')){makeWorld();toast('Welt zurückgesetzt.')}};
+
+for(const param of ['height','spread','density']){
+ const el=$('tree'+param[0].toUpperCase()+param.slice(1));
+ el.value=state.treeParams[param];el.addEventListener('input',()=>{state.treeParams[param]=Number(el.value);$('value'+param).textContent=el.value;});
+}
+$('retune').addEventListener('click',()=>{const t=state.selected;if(!t){toast('Zuerst Kachel auswählen');return;}const c=cell(t.x,t.z);if(!isTree(c.item)){toast('Hier steht kein Baum');return;}applyTool(t.x,t.z,c.item);});
+const tools=$('tools');for(const [id,emoji,name] of TOOLSET){const b=document.createElement('button');b.className='tool';b.dataset.tool=id;b.setAttribute('aria-label',name);const emojiEl=document.createElement('span');emojiEl.textContent=emoji;const small=document.createElement('small');small.textContent=name;b.append(emojiEl,small);b.onclick=()=>{state.tool=id;sync()};tools.append(b);}
+window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;if((e.target===C||e.target.closest?.('button,a'))&&e.code==='Space')return;if(!$('welcome').hidden)return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();if(e.shiftKey)redo();else undo();return;}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();redo();return;}if(e.code==='Space'){e.preventDefault();if(!e.repeat){state.playing=!state.playing;sync();}return;}});
+let last=performance.now(),acc=0;function loop(now){let dt=Math.min(.25,(now-last)/1000);last=now;if(state.playing){acc+=dt;while(acc>=.45){acc-=.45;step()}}else acc=0;requestAnimationFrame(loop);}document.addEventListener('visibilitychange',()=>{if(document.hidden){state.playing=false;acc=0;sync();}});window.addEventListener('resize',resize);
+$('inspectorToggle').onclick=()=>{let el=document.querySelector('.right');const collapsed=el.classList.toggle('collapsed');$('inspectorToggle').textContent=collapsed?'Details zeigen':'Details ausblenden';$('inspectorToggle').setAttribute('aria-expanded',String(!collapsed))};
+if(matchMedia('(max-width:680px)').matches){document.querySelector('.right').classList.add('collapsed');$('inspectorToggle').textContent='Details zeigen';$('inspectorToggle').setAttribute('aria-expanded','false')}
+$('enter').onclick=()=>{$('welcome').hidden=true;};$('help').onclick=()=>{state.playing=false;state.pointer=null;sync();$('welcome').hidden=false;};window.addEventListener('blur',()=>{state.pointer=null;state.playing=false;acc=0;sync();});
+makeWorld();resize();sync();requestAnimationFrame(render);requestAnimationFrame(loop);
+// Development-only mutable test surface, never exposed in default delivery.
+// QA test surface is explicitly opt-in; mutating test helpers are never exposed in normal gameplay.
+if(Object.hasOwn(window,'__NIGIN_QA_MODE__') && window.__NIGIN_QA_MODE__ === 'LOCAL_TEST_ONLY')
+Object.defineProperty(window,'__NIGIN_WORKSHOP_TEST',{value:Object.freeze({state,worldBalance,balanceCSV,validate,validateV1,validateV2,upgradeSave,generateTree,validGen,houseRecipe,TREE_REVISION,SIMULATION_REVISION,saveObject,applySave,applyTool,step,passable,makeWorld,screenToCell,undo,redo,snap,restore,capture,getCommandStats:()=>({count:state.history.length,approxBytes:JSON.stringify(state.history).length}),getVisualStats:()=>({canvasPixels:C.width*C.height,pixelRatio,treeCacheSize:treeCache.size,frame:state.frame,detailStyle:2,layerRepaints:layerState.repaints,layerDraws:layerState.draws,waterOverlayFrames,waterVisible,waterReducedMotion:reducedMotion.matches})})});
+})();
+</script></body></html>

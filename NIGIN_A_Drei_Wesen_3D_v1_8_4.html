@@ -1,0 +1,547 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#122831"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-cbyijShMacMAoUKA3bLrzg1eGlNFg7L+V/KxkJgkm1c='; style-src 'sha256-cNWcfWoHNXM2uH55z9YOMVvKlAQA4DmTflxScWGlz9Q='; img-src data:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"><title>NIGIN · Drei Wesen 3D v1.8.4</title><style>:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#f1faf4;background:#122831;font-synthesis:none}*{box-sizing:border-box}body{margin:0;overflow:hidden}button{font:inherit;cursor:pointer;color:#e8faf3;background:#1d3c47;border:1px solid #598383;border-radius:10px;padding:10px 12px;min-height:42px}button:hover{background:#315968}button:focus-visible{outline:3px solid #d9f5bc;outline-offset:2px}#world{position:fixed;inset:0;width:100vw;height:100vh;touch-action:none;display:block}#hud{position:fixed;inset:0;pointer-events:none}#hud>*{pointer-events:auto}.top{position:absolute;top:16px;left:16px;right:16px;display:flex;align-items:start;justify-content:space-between;gap:12px}.brand,.panel,.bottom,.mobile{background:#0d2732e9;border:1px solid #a2cfc648;backdrop-filter:blur(9px);box-shadow:0 8px 22px #05131a50}.brand{padding:14px;border-radius:15px}.brand strong{display:block;letter-spacing:.11em;font-size:16px}.brand small{display:block;color:#b3d1c9;font-size:11px;margin-top:5px}.actors{display:flex;flex-wrap:wrap;justify-content:end;gap:6px}.actors button[aria-pressed=true]{background:#a0dfc6;color:#153636}.panel{position:absolute;left:16px;top:112px;width:min(265px,calc(100vw - 32px));padding:14px;border-radius:16px}.panel h2{font-size:19px;margin:0 0 7px}.panel p{font-size:12px;line-height:1.5;color:#c0ded6;margin:5px 0}.panel small{color:#9cc7b6}.panel #target{color:#f9deac}.journal{font-size:11px;line-height:1.6;color:#b3d6d0;margin-top:8px}.bottom{position:absolute;bottom:15px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:end;gap:10px;padding:12px;border-radius:14px}.bottom .actionBox{display:flex;gap:8px;flex-wrap:wrap}.bottom .status{font-size:12px;max-width:350px}.bottom .status small{display:block;font-size:11px;margin-top:5px;color:#bedcd6}#feedback{font-size:12px;color:#d4f4dd;margin-top:6px}.mobile{position:absolute;bottom:102px;left:15px;right:15px;display:none;justify-content:space-between;align-items:end;gap:10px;background:none;border:0;box-shadow:none;backdrop-filter:none}.direction{display:grid;grid-template-columns:repeat(3,47px);grid-template-rows:repeat(2,47px);gap:5px}.direction button{padding:5px;min-height:46px;touch-action:none}.direction button[data-hold=KeyW]{grid-column:2}.direction button[data-hold=KeyA]{grid-column:1;grid-row:2}.direction button[data-hold=KeyS]{grid-column:2;grid-row:2}.direction button[data-hold=KeyD]{grid-column:3;grid-row:2}.heightbuttons{display:flex;flex-direction:column;gap:6px}.heightbuttons button{touch-action:none;min-width:90px}.overlay{position:fixed;inset:0;background:#071a22d9;display:grid;place-items:center;padding:20px;z-index:5;overflow:auto}.overlay[hidden],#error[hidden]{display:none!important}.welcome{background:#14303a;border:1px solid #8dd9c180;border-radius:24px;padding:30px;max-width:550px}.welcome h1{font-size:clamp(28px,5vw,48px);margin:10px 0}.welcome p{line-height:1.6;color:#c2dbd3}.welcome button{background:#a7e9cb;color:#163b34;font-weight:bold;border:0}.welcome small{display:block;color:#9abfb7;margin-top:16px}#error{position:fixed;z-index:10;inset:0;padding:10vw;background:#19313a}@media(max-width:800px){.top{top:9px;left:9px;right:9px;display:block}.brand{width:max-content;max-width:100%;padding:8px 10px}.brand strong{font-size:12px}.actors{justify-content:start;margin-top:8px}.actors button{padding:8px 10px;font-size:11px}.panel{left:9px;top:109px;width:min(230px,60vw);padding:9px}.panel h2{font-size:14px}.panel p{font-size:10px}.panel .journal,.panel small{display:none}.bottom{left:9px;right:9px;bottom:6px;padding:8px;display:block}.bottom .status{font-size:10px}.bottom .actionBox{margin-top:6px}.bottom button{font-size:10px;padding:6px 8px;min-height:38px}.mobile{display:flex;bottom:111px}.welcome{padding:20px}}@media(pointer:fine){.mobile{display:none}}@media(max-width:385px){.panel{width:170px}.bottom .actionBox button{min-height:36px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+.heightbuttons button:disabled{opacity:.30;cursor:not-allowed}
+
+/* v1.6: affordance and progression without changes to save schema */
+.quest{margin:8px 0 4px;padding:9px;border:1px solid #9ac8b35e;border-radius:9px;background:#183b3b80}.quest label{display:block;color:#e5fad3;font-size:11px;line-height:1.4}.quest progress{display:block;width:100%;height:8px;margin-top:6px;accent-color:#b8e8b8}#pause[aria-pressed=true]{background:#8c6035;color:#fff9d9}@media(max-width:800px){.quest{padding:5px}.quest label{font-size:9px}.quest progress{height:5px}}
+
+/* v1.7 analog dual-stick: independent pointer capture, safe-area offsets and touch targets */
+.mobile{align-items:flex-end;gap:6px;z-index:2;pointer-events:none!important}
+.mobile>*{pointer-events:auto}
+.stickwrap{display:flex;flex-direction:column;align-items:center;gap:5px;user-select:none;-webkit-user-select:none}
+.stickname{font-size:10px;font-weight:800;letter-spacing:.12em;color:#e1f7df;background:#0a2738dd;padding:3px 8px;border-radius:8px;text-shadow:0 1px 2px #000}
+.stick{position:relative;flex:none;width:116px;height:116px;border-radius:50%;border:2px solid #a5ead5ba;background:radial-gradient(circle at 36% 30%,#395b6696,#102d3cda 72%);box-shadow:0 0 0 5px #b2dfcf15,inset 0 0 24px #1c4f65cc,0 5px 16px #00141c80;touch-action:none;overscroll-behavior:contain;user-select:none;-webkit-user-select:none}
+.stickring{position:absolute;inset:23%;border:1px dashed #b3ddce78;border-radius:50%;pointer-events:none}
+.stickthumb{position:absolute;left:50%;top:50%;margin-left:-21px;margin-top:-21px;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#e1ffe4,#83c3b5 65%,#4b9b99);border:2px solid #e3f7d8;box-shadow:0 3px 10px #091a21b0;pointer-events:none;will-change:transform}
+.stick:focus-visible{outline:3px solid #fff6a8}
+.heightbuttons{align-self:end;padding-bottom:6px}
+.heightbuttons button{min-width:74px;min-height:48px;background:#183a49ee}
+@media(max-width:800px){.mobile{bottom:calc(108px + env(safe-area-inset-bottom,0px));left:12px;right:12px}.stick{width:104px;height:104px}.stickthumb{width:38px;height:38px;margin-left:-19px;margin-top:-19px}}
+@media(max-width:400px){.stick{width:96px;height:96px}.heightbuttons button{min-width:64px;font-size:10px;padding:6px}.stickname{font-size:9px}}
+@media(max-height:500px) and (max-width:950px){.panel{left:46%;top:95px;width:190px;max-height:105px;overflow:hidden}.mobile{bottom:calc(78px + env(safe-area-inset-bottom,0px))}.bottom .status{display:none}.bottom{padding:4px}.bottom .actionBox{margin:0}.stick{width:98px;height:98px}}
+@media(pointer:fine){.mobile{display:none}}
+
+.viewhome{min-height:30px;border:0;background:transparent;padding:3px 8px;font-size:10px;font-weight:800;letter-spacing:.10em;color:#f0ffe6;touch-action:manipulation}
+.viewhome:focus-visible{outline:3px solid #fff0ad}
+@media(max-height:540px){.overlay{display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:8px}.welcome{max-height:calc(100dvh - 16px);overflow-y:auto;padding:12px;max-width:580px;margin:auto}.welcome h1{font-size:25px;margin:2px 0}.welcome p{font-size:12px;line-height:1.3}.welcome small{margin-top:6px}}
+/* Touch landscape must not lose controls just because viewport width exceeds 800px. */
+@media(pointer:coarse){.mobile{display:flex}}
+@media(pointer:coarse) and (min-width:801px){.mobile{bottom:calc(70px + env(safe-area-inset-bottom,0px));left:16px;right:16px}.stick{width:96px;height:96px}.heightbuttons button{min-height:38px;min-width:74px}.bottom{bottom:5px;left:10px;right:10px;padding:5px}.bottom .status{display:none}.bottom .actionBox{gap:5px}.bottom button{padding:5px 9px;min-height:35px}}
+@media(pointer:coarse) and (min-width:801px) and (max-height:500px){
+ .panel{left:18%;top:95px;width:180px;max-height:105px}
+ .heightbuttons{position:absolute;right:126px;bottom:8px}
+}
+
+/* R23: Pointer-only alternative, no dragging. Collapsed by default; no overlap with twin sticks. */
+.tapaccess{margin:8px 0;color:#e4f3e8;border:1px solid #9cd6b570;border-radius:10px;background:#193c45df}
+.tapaccess summary{cursor:pointer;list-style:revert;font-size:11px;font-weight:700;padding:9px 7px;line-height:1.3;touch-action:manipulation}
+.tapaccess[open]{max-height:min(36vh,295px);overflow:auto}
+.tapcontrols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;padding:3px 5px}
+.tapcontrols button{min-height:40px;min-width:0;padding:4px 0;font-weight:800;background:#345664;touch-action:manipulation}
+.tapaccess .tapnote{display:block;padding:5px;font-size:10px}
+@media(max-width:800px){.tapaccess{position:relative;margin:4px 0}.tapaccess summary{font-size:10px;padding:6px 4px}.tapaccess[open]{max-height:43vh}.tapaccess .tapnote{display:block;font-size:9px}}
+@media(max-height:500px) and (pointer:coarse){.panel:has(.tapaccess[open]){max-height:66vh;overflow:auto;z-index:4}.tapaccess[open]{max-height:48vh}}
+@media (scripting:none){html,body{overflow:auto!important;height:auto!important}body>*:not(noscript){display:none!important}}.nigin-nojs{box-sizing:border-box;width:calc(100% - 32px);max-width:34rem;margin:10vh auto;padding:20px 22px;border-radius:14px;background:#0f2b2c;color:#eef7f2;border:2px solid #9fe0c9;font:16px/1.55 system-ui,sans-serif}.nigin-nojs strong{display:block;font-size:20px;margin-bottom:8px}.nigin-nojs p{margin:8px 0 0}</style></head><body><noscript><div class="nigin-nojs" role="alert"><strong>NIGIN braucht JavaScript, um zu starten.</strong><p>Diese Ansicht führt keine Scripts aus – zum Beispiel die Vorschau der Dateien-App auf iPhone und iPad.</p><p>So geht es: die Datei über „Teilen“ in einem Browser oder einer HTML-Viewer-App öffnen, die JavaScript ausführt; am Computer die Datei direkt im Browser öffnen.</p><p>Die Welt läuft vollständig offline, es werden keine Daten gesendet.</p></div></noscript>
+<canvas id="world" aria-label="Dreidimensionale Spielwelt, mit Tastatur oder Touch steuerbar"></canvas><div id="hud"><div class="top"><div class="brand"><strong>NIGIN · DREI WESEN</strong><small>SPIELVERSION 1.8.4 · OFFLINE · <span id="rendererType">Prüfe Grafik</span></small></div><div class="actors" role="group" aria-label="Figur auswählen"><button data-actor="fox" aria-pressed="true">1 · Fuchs</button><button data-actor="raven" aria-pressed="false">2 · Rabe</button><button data-actor="ghost" aria-pressed="false">3 · Geist</button><button id="graphics" aria-pressed="false" title="Hohe Auflösung benötigt mehr Grafikleistung">Grafik · Ausgewogen</button><button id="fullscreen" type="button" aria-pressed="false" hidden>Vollbild · V</button></div></div>
+<aside class="panel"><h2 id="mode">Nigin · Fuchs</h2><p id="ability"></p><p id="coords"></p><p>Bewegung: <strong id="movement">stehen</strong></p><p id="target">Objekte: herangehen und F drücken</p><div class="quest"><label id="questLabel" for="questProgress">Entdeckungspfad 0/3</label><progress id="questProgress" max="3" value="0"></progress></div><small id="moveHelp">Links bewegen · Rechts blicken · WASD bewegen · Q/E schwenken · Bild↑/↓ neigen · Fuchs: Leertaste springen · 1/2/3 wechseln · F interagieren · Maus ziehen: Kamera · Q/E: drehen · C: zentrieren · V: Vollbild · Bild↑/↓: neigen · Rad: Zoom · Rabe/Geist: Leertaste steigen, Shift sinken</small><details class="tapaccess" id="tapAccess"><summary>Einhand-Steuerung · tippen statt ziehen</summary>
+<div class="tapcontrols" role="group" aria-label="Figur schrittweise bewegen ohne Ziehbewegung">
+<button type="button" data-tapmove="forward" aria-label="Einen Schritt vorwärts">↑</button>
+<button type="button" data-tapmove="left" aria-label="Einen Schritt nach links">←</button>
+<button type="button" data-tapmove="backward" aria-label="Einen Schritt rückwärts">↓</button>
+<button type="button" data-tapmove="right" aria-label="Einen Schritt nach rechts">→</button>
+</div><div class="tapcontrols" role="group" aria-label="Blickrichtung schrittweise ändern">
+<button type="button" data-taplook="turnLeft" aria-label="Blick nach links drehen">↶</button>
+<button type="button" data-taplook="turnRight" aria-label="Blick nach rechts drehen">↷</button>
+<button type="button" data-taplook="viewUp" aria-label="Blick höher oder Karte vergrössern">＋</button>
+<button type="button" data-taplook="viewDown" aria-label="Blick tiefer oder Karte verkleinern">−</button>
+</div><small class="tapnote">Einzeln antippen · keine Mehrfinger-Geste notwendig</small></details><div class="journal" id="journal" role="log" aria-live="off" aria-label="Ereignisse"></div></aside>
+<div class="mobile" role="group" aria-label="Zwei-Joystick-Steuerung">
+ <div class="stickwrap"><div class="stickname">BEWEGEN</div><div class="stick" id="moveStick" role="group" aria-label="Linker analoger Joystick für die Bewegung"><div class="stickring"></div><div class="stickthumb" id="moveThumb"></div></div></div>
+ <div class="heightbuttons"><button data-hold="Space" aria-label="Springen oder steigen">Steigen</button><button data-hold="ShiftLeft" aria-label="Sinken">Sinken</button></div>
+ <div class="stickwrap"><div class="stickname"><button id="viewReset" class="viewhome" type="button" aria-label="Blick zentrieren">↺ BLICK / WINKEL</button></div><div class="stick" id="lookStick" role="group" aria-label="Rechter analoger Joystick für Kameradrehung und Neigung"><div class="stickring"></div><div class="stickthumb" id="lookThumb"></div></div></div>
+ </div>
+<div class="bottom"><div class="status"><strong>Simulationsschritte: <span id="count">0</span></strong><div id="feedback" role="status" aria-live="polite">Bereit für den 3D-Test.</div></div><div class="actionBox"><button id="interact">Interagieren · F</button><button id="pause" aria-pressed="false">Pause · P</button><button id="new" title="Erkundung zurücksetzen">Neu</button><button id="export">Speichern</button><button id="import">Laden</button><input id="loadfile" type="file" accept="application/json,.json" hidden></div></div></div>
+<div class="overlay" id="welcome"><div class="welcome"><small>Neue Testwelt · Linie A</small><h1>Drei Wesen.<br>Eine Welt zum Entdecken.</h1><p>Steuere Nigin als Fuchs, den Raben oder den Geist in einer kleinen räumlichen Welt. Der Geist passiert Mauern, der Rabe überfliegt sie und Nigin benutzt Dinge. Links bewegst du dich stufenlos und diagonal, rechts drehst du den Blick und änderst den Winkel. Im 2D-Ersatzmodus drehst und zoomst du die Karte. Neu: Einhand-Steuerung im linken Infobereich öffnen und Schritte einzeln tippen. Mit WebGL wird die Umgebung in 3D dargestellt; ohne WebGL ist dieselbe Steuerung in einer vereinfachten 2D-Ansicht spielbar. Dies ist ein Vertical-Slice mit drei Entdeckungszielen, noch kein vollständiges Kampagnenspiel.</p><button id="begin">3D-Welt betreten</button><small>Kein Netzwerk · keine externen Bibliotheken · lokale Spielstände als JSON · unabhängig von der Rabenwerkstatt</small></div></div><div id="error" hidden><h2>WebGL nicht verfügbar</h2><p>Aktiviere WebGL/Hardwarebeschleunigung oder öffne die Datei in einem aktuellen Browser.</p></div><script>'use strict';(()=>{
+const $=id=>document.getElementById(id),canvas=$('world'),gl=canvas.getContext('webgl',{alpha:false,antialias:true,depth:true,powerPreference:'low-power'});
+const ctx2d=gl?null:canvas.getContext('2d',{alpha:false});if(!gl&&!ctx2d){$('error').hidden=false;return;}
+const PI=Math.PI,clamp=(v,a,b)=>Math.min(b,Math.max(a,v)),finite=Number.isFinite,validActor=id=>['fox','raven','ghost'].includes(id);
+const defs=Object.freeze({fox:{name:'Nigin · Fuchs',speed:2.9,ability:'Gehen · Schieben · Tragen'},raven:{name:'Rabe',speed:4.1,ability:'Fliegen · Landen · Erkunden'},ghost:{name:'Geist',speed:3.45,ability:'Schweben · Durch Wände gleiten'}});
+const initialActors=()=>({fox:{x:0,y:0,z:8},raven:{x:-7,y:2.6,z:0},ghost:{x:2,y:1.1,z:8}});
+const objectDefs=[['door','Tür',0,4],['lamp','Licht',-1.7,-1.3],['chest','Truhe',2.1,-1.4],['crate','Kiste',0.8,7],['perch','Warte',-8,-3],['bell','Glocke',7,-2],['memory','Erinnerung',-9,7],['flower','Blume',6,8],['pond','Quelle',9,8]];
+const initialObjects=()=>objectDefs.map(([id,title,x,z])=>({id,title,x,z,state:id==='door'?false:id==='crate'||id==='bell'?0:false}));
+const state={active:'fox',actors:initialActors(),objects:initialObjects(),inventory:[],messages:[],started:false,paused:false,keys:new Set(),buttons:new Set(),yaw:.45,pitch:.34,zoom:12,frames:0,ticks:0,glLost:false};
+const get=id=>state.objects.find(o=>o.id===id),active=()=>state.actors[state.active];
+// Transient controller state is intentionally NOT part of the v1 save DTO.
+const controller={fox:{vy:0,jumpHeld:false},raven:{},ghost:{},velocity:{fox:{x:0,z:0},raven:{x:0,z:0},ghost:{x:0,z:0}},action:'idle',time:0};
+const cameraFollow={eye:null,target:null};
+// Two independent analog pointers; values are normalized in [-1,1]. Neither enters JSON saves.
+const sticks={move:{id:null,x:0,y:0},look:{id:null,x:0,y:0}};
+const STICK_DEADZONE=.15,TURN_RATE=2.65,PITCH_RATE=1.55;
+function radial(x,y,dead=STICK_DEADZONE){
+ const r=Math.hypot(x,y);if(!(r>dead))return {x:0,y:0};
+ const mag=Math.min(1,(r-dead)/(1-dead));return {x:x/r*mag,y:y/r*mag};
+}
+function readGamepad(){
+ try{const pads=navigator.getGamepads?.()||[];for(const p of pads){if(!p||p.connected===false||p.mapping!=='standard'||!p.axes||p.axes.length<4)continue;
+  const safe=n=>Number.isFinite(n)?clamp(n,-1,1):0;
+  return {move:radial(safe(p.axes[0]),safe(p.axes[1])),look:radial(safe(p.axes[2]),safe(p.axes[3])),jump:!!p.buttons?.[0]?.pressed,down:!!p.buttons?.[1]?.pressed,act:!!p.buttons?.[2]?.pressed};
+ }}catch(e){}return {move:{x:0,y:0},look:{x:0,y:0},jump:false,down:false,act:false};
+}
+let lastGamepadAction=true;
+function resetSticks(){for(const key of ['move','look']){const s=sticks[key];s.id=null;s.x=0;s.y=0;const k=$(key+'Thumb');if(k)k.style.transform='translate(0px,0px)';}}
+function combinedInput(){
+ const k=s=>state.keys.has(s)||state.buttons.has(s),pad=readGamepad();
+ const keyX=Number(k('KeyD')||k('ArrowRight'))-Number(k('KeyA')||k('ArrowLeft'));
+ const keyY=Number(k('KeyS')||k('ArrowDown'))-Number(k('KeyW')||k('ArrowUp'));
+ const analog=radial(sticks.move.x,sticks.move.y,0);
+ const useKey=keyX!==0||keyY!==0;
+ let m=useKey?{x:keyX,y:keyY}:Math.hypot(analog.x,analog.y)>.001?analog:pad.move;
+ const norm=Math.max(1,Math.hypot(m.x,m.y));m={x:m.x/norm,y:m.y/norm};
+ const keyLook={x:Number(k('KeyE'))-Number(k('KeyQ')),y:Number(k('PageDown'))-Number(k('PageUp'))};
+ const look=Math.hypot(sticks.look.x,sticks.look.y)>.001?radial(sticks.look.x,sticks.look.y,0):
+  (keyLook.x||keyLook.y?keyLook:pad.look);
+ return {axisX:m.x,axisY:m.y,lookX:look.x,lookY:look.y,
+  up:k('Space')||pad.jump,down:k('ShiftLeft')||pad.down,gamepadAct:pad.act};
+}
+function applyLook(x,y,dt){if(!(dt>0&&dt<=.1)||!Number.isFinite(x)||!Number.isFinite(y))return;
+ const amp=Math.max(1,Math.hypot(x,y));x/=amp;y/=amp;
+ state.yaw=(state.yaw+x*TURN_RATE*dt)%(2*Math.PI);
+ if(gl)state.pitch=clamp(state.pitch+y*PITCH_RATE*dt,-.10,1.20);
+ else state.zoom=clamp(state.zoom*(1+y*.85*dt),6,20);
+}
+function resetView(){state.yaw=.45;state.pitch=.34;state.zoom=12;cameraFollow.eye=null;note('Blickrichtung zentriert.');}
+// WCAG 2.5.1/2.5.7: single-pointer, tap-only alternative to two dragging joysticks.
+// Intentionally uses the same collision and camera-relative movement as continuous input.
+function tapMovement(direction){
+ if(!state.started||state.paused||state.glLost||document.hidden)return false;
+ const vectors={forward:[0,-1],backward:[0,1],left:[-1,0],right:[1,0]};
+ if(!Object.hasOwn(vectors,direction))return false;
+ const [axisX,axisY]=vectors[direction];
+ // 12 bounded substeps preserve collision and acceleration instead of teleporting.
+ for(let i=0;i<12;i++){controlledStep({axisX,axisY,up:false,down:false},1/60);state.ticks++;}
+ controller.velocity[state.active]={x:0,z:0};updateHUD();return true;
+}
+function tapLook(direction){
+ if(!state.started||state.paused||state.glLost||document.hidden)return false;
+ const v={turnLeft:[-1,0],turnRight:[1,0],viewUp:[0,-1],viewDown:[0,1]};
+ if(!Object.hasOwn(v,direction))return false;
+ const [x,y]=v[direction];applyLook(x,y,.1);cameraFollow.eye=null;updateHUD();return true;
+}
+
+function bindStick(name){const zone=$(name+'Stick'),thumb=$(name+'Thumb'),s=sticks[name];
+ const update=e=>{const b=zone.getBoundingClientRect(),rad=Math.max(1,Math.min(b.width,b.height)*.33),
+  cx=b.left+b.width/2,cy=b.top+b.height/2,dx=e.clientX-cx,dy=e.clientY-cy,
+  r=Math.hypot(dx,dy),u=Math.min(1,r/rad),vx=r>0?dx/r*u:0,vy=r>0?dy/r*u:0;
+  const val=radial(vx,vy);s.x=val.x;s.y=val.y;
+  thumb.style.transform=`translate(${vx*rad}px,${vy*rad}px)`;
+ };
+ const release=e=>{if(s.id!==e.pointerId)return;s.id=null;s.x=0;s.y=0;thumb.style.transform='translate(0px,0px)';};
+ zone.addEventListener('pointerdown',e=>{if(s.id!==null||state.paused||!state.started||state.glLost)return;
+   e.preventDefault();s.id=e.pointerId;zone.setPointerCapture(e.pointerId);update(e);});
+ zone.addEventListener('pointermove',e=>{if(e.pointerId===s.id){e.preventDefault();update(e);}});
+ for(const event of ['pointerup','pointercancel','lostpointercapture'])zone.addEventListener(event,release);
+ zone.addEventListener('contextmenu',e=>e.preventDefault());
+}
+
+let pausedBeforeContextLoss=false; // preserve user's deliberate pause across GPU resets
+const lerp=(a,b,t)=>a+(b-a)*t;
+const lerpVec=(a,b,t)=>a.map((v,i)=>lerp(v,b[i],t));
+function resetController(){controller.fox.vy=0;controller.fox.jumpHeld=false;controller.action='stehen';for(const id of ['fox','raven','ghost'])controller.velocity[id]={x:0,z:0};cameraFollow.eye=null;cameraFollow.target=null;}
+function controlledStep(input,dt){
+ if(!(dt>0&&dt<=.1))return;
+ const id=state.active,a=active(),v=controller.velocity[id];controller.time+=dt;
+ const side=Number.isFinite(input.axisX)?clamp(input.axisX,-1,1):Number(!!input.right)-Number(!!input.left);
+ const ahead=Number.isFinite(input.axisY)?-clamp(input.axisY,-1,1):Number(!!input.forward)-Number(!!input.back);
+ const heading=state.yaw; // both 3D and rotated 2D map are camera-relative
+ const rawX=Math.cos(heading)*side-Math.sin(heading)*ahead;
+ const rawZ=-Math.sin(heading)*side-Math.cos(heading)*ahead;
+ const magnitude=Math.max(1,Math.hypot(rawX,rawZ)),tx=rawX/magnitude,tz=rawZ/magnitude;
+ const alpha=1-Math.exp(-20*dt);v.x=lerp(v.x,tx,alpha);v.z=lerp(v.z,tz,alpha);
+ if(Math.hypot(v.x,v.z)<.005){v.x=0;v.z=0;}
+ if(id==='fox'){
+   if(input.up&&!controller.fox.jumpHeld&&a.y<=.001)controller.fox.vy=4.6;
+   controller.fox.jumpHeld=!!input.up;
+   controller.fox.vy=Math.max(-12,controller.fox.vy-11.8*dt);
+   const vy=controller.fox.vy,oldY=a.y;
+   move(id,v.x,v.z,0,dt);
+   const tryY=clamp(oldY+vy*dt,0,5.15);
+   const climbed=sweepActor(a,{x:0,y:tryY-oldY,z:0},id);
+   a.y=climbed.y;
+   if(climbed.hit||Math.abs(a.y-tryY)>1e-5)controller.fox.vy=0;
+   if(a.y<=.001){a.y=0;controller.fox.vy=0;}
+   controller.action=a.y>.01?'springen':Math.hypot(v.x,v.z)>.16?'laufen':'stehen';
+ }else{
+   const vertical=Number(!!input.up)-Number(!!input.down);
+   move(id,v.x,v.z,vertical,dt);
+   controller.action=id==='raven'?(Math.hypot(v.x,v.z)>.16||vertical?'fliegen':'schweben'):(Math.hypot(v.x,v.z)>.16||vertical?'gleiten':'schweben');
+ }
+}
+
+// Volumetric scene: every collider has a real min/max Y. An elevated raven may fly above its roof/wall.
+function obstacles(objects=state.objects){const door=objects.find(o=>o.id==='door'),crate=objects.find(o=>o.id==='crate');
+ return [{x:-4,y:0,z:0,w:.40,h:2.7,d:8.4},{x:4,y:0,z:0,w:.4,h:2.7,d:8.4},
+ {x:0,y:0,z:-4,w:8.4,h:2.7,d:.4},{x:-2.48,y:0,z:4,w:3.45,h:2.7,d:.4},{x:2.48,y:0,z:4,w:3.45,h:2.7,d:.4},
+ ...(door&&!door.state?[{x:0,y:0,z:4,w:1.8,h:2.6,d:.35}]:[]),
+ ...(crate?[{x:crate.x,y:0,z:crate.z,w:.9,h:1,d:.9}]:[]),
+ {x:-7,y:0,z:-6,w:.8,h:3.0,d:.8},{x:8,y:0,z:0,w:1.2,h:2.9,d:1.2}];}
+function blocker(a,id,objects=state.objects){if(!validActor(id)||![a.x,a.y,a.z].every(finite)||Math.abs(a.x)>13.35||Math.abs(a.z)>13.35||a.y<0||a.y>5.2)return true;
+ if(id==='ghost')return false;
+ const rad=id==='fox'?.29:.27,bottom=a.y,top=a.y+(id==='fox'?.82:.50);
+ return obstacles(objects).some(b=>a.x+rad>b.x-b.w/2&&a.x-rad<b.x+b.w/2&&a.z+rad>b.z-b.d/2&&a.z-rad<b.z+b.d/2&&top>b.y&&bottom<b.y+b.h);
+}
+function setActor(id){if(!validActor(id))return false;state.active=id;state.keys.clear();state.buttons.clear();resetSticks();resetController();updateHUD();return true;}
+// Continuous swept actor-AABB against world AABBs. This prevents tunnelling through
+// thin walls when frames are delayed. The body is conservative (box, not a capsule).
+// We project the remaining motion onto the hit plane for sliding.
+function sweepHit(start,delta,id,objects=state.objects){
+ if(id==='ghost')return null;
+ const radius=id==='fox'?.29:.27,height=id==='fox'?.82:.50;
+ let best=null;
+ for(const o of obstacles(objects)){
+  const lo=[o.x-o.w/2-radius,o.y-height,o.z-o.d/2-radius];
+  const hi=[o.x+o.w/2+radius,o.y+o.h,o.z+o.d/2+radius];
+  const p=[start.x,start.y,start.z],v=[delta.x,delta.y,delta.z];
+  // Initial penetration is handled by save validation, not by CCD.
+  if(p.every((q,j)=>q>lo[j]+1e-7&&q<hi[j]-1e-7))continue;
+  let enter=-Infinity,exit=Infinity,normal=null,valid=true;
+  for(let axis=0;axis<3;axis++){
+   if(Math.abs(v[axis])<1e-12){if(p[axis]<lo[axis]||p[axis]>hi[axis]){valid=false;break;}continue;}
+   const t0=(lo[axis]-p[axis])/v[axis],t1=(hi[axis]-p[axis])/v[axis];
+   const low=Math.min(t0,t1),high=Math.max(t0,t1);
+   if(low>enter){enter=low;normal=[0,0,0];normal[axis]=v[axis]>0?-1:1;}
+   exit=Math.min(exit,high);if(enter>exit){valid=false;break;}
+  }
+  if(valid&&enter>=-1e-9&&enter<=1&&exit>=0&&normal){
+   const approach=delta.x*normal[0]+delta.y*normal[1]+delta.z*normal[2];
+   if(approach< -1e-10&&(!best||enter<best.t))best={t:Math.max(0,enter),normal};
+  }
+ }
+ return best;
+}
+function sweepActor(position,delta,id){
+ if(id==='ghost')return {x:clamp(position.x+delta.x,-13.35,13.35),y:clamp(position.y+delta.y,.5,5.15),z:clamp(position.z+delta.z,-13.35,13.35),hit:false};
+ let p={...position},left={...delta},hit=false;
+ for(let i=0;i<4;i++){
+  const candidate={x:clamp(p.x+left.x,-13.35,13.35),y:clamp(p.y+left.y,id==='fox'?0:.35,5.15),z:clamp(p.z+left.z,-13.35,13.35)};
+  const d={x:candidate.x-p.x,y:candidate.y-p.y,z:candidate.z-p.z};
+  if(Math.hypot(d.x,d.y,d.z)<1e-10)break;
+  const collision=sweepHit(p,d,id);
+  if(!collision){p=candidate;break;}
+  hit=true;
+  const t=Math.max(0,collision.t-0.00001);
+  p={x:p.x+d.x*t,y:p.y+d.y*t,z:p.z+d.z*t};
+  const n=collision.normal,remaining={x:d.x*(1-t),y:d.y*(1-t),z:d.z*(1-t)};
+  const dot=remaining.x*n[0]+remaining.y*n[1]+remaining.z*n[2];
+  left={x:remaining.x-Math.min(0,dot)*n[0],y:remaining.y-Math.min(0,dot)*n[1],z:remaining.z-Math.min(0,dot)*n[2]};
+ }
+ return {...p,hit};
+}
+function move(id,dx,dz,dy,dt){if(!validActor(id)||![dx,dz,dy,dt].every(finite)||dt<0||dt>.4)return false;
+ const a=state.actors[id],length=Math.hypot(dx,dz),scale=length>1?1:length,speed=defs[id].speed;
+ const delta={x:dx*speed*dt*(length>1?1/length:1),z:dz*speed*dt*(length>1?1/length:1),y:id==='fox'?0:dy*3.1*dt};
+ const next=sweepActor(a,delta,id),changed=Math.hypot(a.x-next.x,a.y-next.y,a.z-next.z)>1e-9;
+ if(!blocker(next,id)){a.x=next.x;a.y=next.y;a.z=next.z;return changed;}
+ return false;
+}
+function hasLine(a,b,id,target){if(id==='ghost')return true;
+ const count=Math.ceil(Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z)/.13),blocks=obstacles().filter(t=>!(target==='door'&&Math.abs(t.x)<.1&&Math.abs(t.z-4)<.1));
+ for(let i=2;i<count-1;i++){const t=i/count,p={x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t,z:a.z+(b.z-a.z)*t};
+  if(blocks.some(o=>p.x>o.x-o.w/2&&p.x<o.x+o.w/2&&p.y>o.y&&p.y<o.y+o.h&&p.z>o.z-o.d/2&&p.z<o.z+o.d/2))return false;
+ }return true;}
+function available(o,id=state.active){const a=state.actors[id];if(id==='raven'&&a.y>1.5)return false;const distance=Math.hypot(o.x-a.x,o.z-a.z,id==='raven'?a.y-.8:0);return distance<(id==='raven'?2.35:2.25)&&hasLine({...a,y:a.y+.45},{x:o.x,y:.8,z:o.z},id,o.id);}
+function nearest(){return state.objects.filter(o=>available(o)).sort((a,b)=>Math.hypot(a.x-active().x,a.z-active().z)-Math.hypot(b.x-active().x,b.z-active().z))[0]||null;}
+function note(s){state.messages.unshift(s);state.messages=state.messages.slice(0,4);$('feedback').textContent=s;$('journal').replaceChildren(...state.messages.map(m=>{const x=document.createElement('div');x.textContent=m;return x;}));}
+function doorOccupied(){return ['fox','raven'].some(id=>{const a=state.actors[id];return Math.abs(a.x)<1.14&&Math.abs(a.z-4)<.5&&a.y<2.7;})||(()=>{const c=get('crate');return Math.abs(c.x)<1.3&&Math.abs(c.z-4)<.65;})();}
+// Explicit allowlisted action policy: each object/actor pair has a defined ability, never script sourced from a save.
+const policy=Object.freeze({door:{fox:'toggle',raven:'observe',ghost:'phase'},lamp:{fox:'toggle',raven:'toggle',ghost:'toggle'},chest:{fox:'loot',raven:'observe',ghost:'sense'},crate:{fox:'push',raven:'observe',ghost:'sense'},perch:{fox:'sense',raven:'toggle',ghost:'sense'},bell:{fox:'ring',raven:'ring',ghost:'ring'},memory:{fox:'sense',raven:'sense',ghost:'reveal'},flower:{fox:'sense',raven:'sense',ghost:'reveal'},pond:{fox:'drink',raven:'sense',ghost:'sense'}});
+function interact(){const o=nearest();if(!o){note('Kein erreichbarer Gegenstand. Näher herangehen oder landen.');return false;}
+ const action=policy[o.id][state.active];
+ if(o.id==='door'){
+  if(action==='toggle'){if(o.state&&doorOccupied()){note('Tür blockiert: Figur oder Kiste steht im Weg.');return false;}o.state=!o.state;note(o.state?'Die Tür ist offen.':'Die Tür ist geschlossen.');}
+  else note(action==='phase'?'Der Geist gleitet durch die geschlossene Tür.':'Der Rabe kann den schweren Griff nicht bewegen.');
+ }else if(action==='toggle'){o.state=!o.state;note(o.title+(o.state?' aktiviert.':' deaktiviert.'));}
+ else if(action==='ring'){o.state=Math.min(10000,Number(o.state||0)+1);note('Die Glocke klingt durch die Welt.');}
+ else if(action==='loot'){if(!o.state){o.state=true;state.inventory=['Messingschlüssel'];note('Der Fuchs findet den Messingschlüssel.');}else note('Die Truhe ist bereits leer.');}
+ else if(action==='push'){const a=active(),dx=o.x-a.x,dz=o.z-a.z,l=Math.hypot(dx,dz)||1,xx=o.x+dx/l,zz=o.z+dz/l;
+  if(blocker({x:xx,y:0,z:zz},'fox',state.objects.filter(q=>q.id!=='crate'))||Math.abs(xx)>12||Math.abs(zz)>12){note('Kiste lässt sich hier nicht schieben.');return false;}
+  o.x=xx;o.z=zz;o.state=Math.min(10000,o.state+1);note('Die Kiste wurde verschoben.');
+ }else if(action==='reveal'){o.state=true;note(o.id==='memory'?'Eine Erinnerung erscheint.':'Die Blume leuchtet auf.');}
+ else if(action==='drink'){note('Nigin trinkt aus der Quelle.');}
+ else if(action==='phase')note('Der Geist ist nicht an diese Wand gebunden.');
+ else note('Du entdeckst einen Hinweis bei '+o.title+'.');
+ updateHUD();return true;}
+function updateHUD(){const a=active();$('mode').textContent=defs[state.active].name;$('ability').textContent=defs[state.active].ability;
+ $('coords').textContent=`X ${a.x.toFixed(1)} · H ${a.y.toFixed(1)} · Z ${a.z.toFixed(1)}`+(state.active==='ghost'&&Math.abs(a.x)<4.7&&Math.abs(a.z)<4.7?' · Phasensicht':'');
+ const close=nearest();$('target').textContent=close?'In Reichweite: '+close.title+' · F / Aktion':'Objekte: herangehen und F drücken';
+ const solved=[Boolean(get('chest').state),Boolean(get('memory').state),Number(get('bell').state)>0];
+ const objectives=['Fuchs · die Truhe öffnen','Geist · Erinnerung am Stein enthüllen','Rabe · Glocke nach der Landung läuten'];
+ const done=solved.filter(Boolean).length;
+ $('questProgress').value=done;
+ $('questLabel').textContent=done===3?'Alle drei Spuren entdeckt. Die Geschichte geht weiter.':`Entdeckungspfad ${done}/3 · ${objectives[solved.indexOf(false)]}`;
+ $('pause').textContent=state.paused?'Fortsetzen':'Pause';$('pause').setAttribute('aria-pressed',String(state.paused));
+ document.querySelectorAll('[data-actor]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.actor===state.active)));
+ $('count').textContent=String(state.ticks);$('movement').textContent=controller.action;const rise=document.querySelector('[data-hold=Space]'),fall=document.querySelector('[data-hold=ShiftLeft]');if(rise)rise.textContent=state.active==='fox'?'Springen':'Steigen';if(fall)fall.disabled=state.active==='fox';}
+function snapshot(){return {kind:'nigin-three-beings-3d',version:1,active:state.active,actors:structuredClone(state.actors),objects:state.objects.map(o=>({...o})),inventory:[...state.inventory]};}
+function validate(s){if(!s||Object.getPrototypeOf(s)!==Object.prototype||Object.keys(s).sort().join(',')!=='active,actors,inventory,kind,objects,version'||s.kind!=='nigin-three-beings-3d'||s.version!==1||!validActor(s.active)||!s.actors||Object.keys(s.actors).sort().join(',')!=='fox,ghost,raven'||!Array.isArray(s.objects)||s.objects.length!==9||!Array.isArray(s.inventory)||s.inventory.length>1)throw Error('Unbekannter Spielstand');
+ for(const id of ['fox','raven','ghost']){const a=s.actors[id];if(!a||Object.keys(a).sort().join(',')!=='x,y,z'||!['x','y','z'].every(k=>typeof a[k]==='number'&&finite(a[k]))||blocker(a,id,s.objects)||id==='fox'&&(a.y<0||a.y>5.15)||id==='raven'&&a.y<.35||id==='ghost'&&a.y<.5)throw Error('Ungültige Figur');}
+ // Exact IDs and state types; finite coordinates; no imported code, flags or new object classes.
+ for(let i=0;i<9;i++){const o=s.objects[i],[id,title,x,z]=objectDefs[i];if(!o||o.id!==id||o.title!==title||![o.x,o.z].every(finite)||Math.abs(o.x)>12||Math.abs(o.z)>12||(id!=='crate'&&(o.x!==x||o.z!==z))||Object.keys(o).sort().join(',')!=='id,state,title,x,z'||(!['crate','bell'].includes(id)&&typeof o.state!=='boolean')||(['crate','bell'].includes(id)&&(!Number.isSafeInteger(o.state)||o.state<0||o.state>10000)))throw Error('Ungültiger Gegenstand');}
+ const cr=getFrom(s.objects,'crate');if(blocker({x:cr.x,y:0,z:cr.z},'fox',s.objects.filter(o=>o.id!=='crate')))throw Error('Kiste steht in einer Wand');
+ if(s.inventory.some(v=>v!=='Messingschlüssel')||new Set(s.inventory).size!==s.inventory.length||s.inventory.includes('Messingschlüssel')&&!getFrom(s.objects,'chest').state)throw Error('Ungültiges Inventar');
+ return true;}
+const getFrom=(arr,id)=>arr.find(o=>o.id===id);
+function applySave(s){validate(s);const clean=structuredClone(s);state.active=clean.active;state.actors=clean.actors;state.objects=clean.objects;state.inventory=clean.inventory;state.keys.clear();state.buttons.clear();resetSticks();resetController();updateHUD();note('Spielstand sicher geladen.');}
+function togglePause(){if(!state.started){note('Zuerst die 3D-Welt betreten.');return;}if(state.glLost){note('Grafik ist noch nicht wiederhergestellt.');return;}state.paused=!state.paused;state.keys.clear();state.buttons.clear();resetSticks();resetController();acc=0;updateHUD();note(state.paused?'Spiel pausiert.':'Spiel fortgesetzt.');}
+function resetGame(){if(!confirm('Neues Spiel beginnen? Ungespeicherter Fortschritt geht verloren.'))return;state.actors=initialActors();state.objects=initialObjects();state.inventory=[];state.active='fox';state.ticks=0;state.keys.clear();state.buttons.clear();resetSticks();state.paused=false;resetController();updateHUD();note('Neue Erkundung begonnen.');}
+function exportSave(){const url=URL.createObjectURL(new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='Nigin_Drei_Wesen_3D_v1.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1200);note('Lokale Datei exportiert.');}
+// Minimal WebGL-1 renderer, real perspective, depth buffer, three spatial axes. No library/CDN.
+let highResolution=false;let vertex=[];const sceneCache={key:null,data:[],rebuilds:0,uploads:0};
+const gpuStats={staticUploads:0,dynamicUploads:0,staticDraws:0,dynamicDraws:0};
+const col=s=>{const n=parseInt(s.slice(1),16);return [(n>>16&255)/255,(n>>8&255)/255,(n&255)/255]};
+function tri(a,b,c,color){const u=b.map((v,i)=>v-a[i]),v=c.map((t,i)=>t-a[i]);const n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]];const l=Math.hypot(...n)||1;for(const p of [a,b,c])vertex.push(...p,...n.map(z=>z/l),...col(color));}
+function quad(a,b,c,d,color){tri(a,b,c,color);tri(a,c,d,color);}
+function box(x,y,z,w,h,d,color){const X=w/2,Z=d/2,A=[x-X,y,z-Z],B=[x+X,y,z-Z],C=[x+X,y,z+Z],D=[x-X,y,z+Z],E=[x-X,y+h,z-Z],F=[x+X,y+h,z-Z],G=[x+X,y+h,z+Z],H=[x-X,y+h,z+Z];quad(A,D,C,B,color);quad(E,F,G,H,color);quad(A,B,F,E,color);quad(B,C,G,F,color);quad(C,D,H,G,color);quad(D,A,E,H,color);}
+function cone(x,y,z,r,h,color){const n=7;for(let i=0;i<n;i++){let a=i*PI*2/n,b=(i+1)*PI*2/n;tri([x+r*Math.cos(a),y,z+r*Math.sin(a)],[x+r*Math.cos(b),y,z+r*Math.sin(b)],[x,y+h,z],color);}}
+// Presentation-only meshes: all collision and world-save data remain unchanged.
+function sphere(x,y,z,rx,ry,rz,color,segments=6,rings=2){
+ for(let j=0;j<rings;j++){const a=-PI/2+PI*j/rings,b=-PI/2+PI*(j+1)/rings;
+  for(let i=0;i<segments;i++){const u=i*2*PI/segments,v=(i+1)*2*PI/segments;
+   const P=(t,w)=>[x+rx*Math.cos(t)*Math.cos(w),y+ry*Math.sin(t),z+rz*Math.cos(t)*Math.sin(w)];
+   quad(P(a,u),P(a,v),P(b,v),P(b,u),color);
+  }
+ }
+}
+function groundDisk(x,z,r,color,y=-.004){const steps=12;for(let i=0;i<steps;i++){
+ const a=i*2*PI/steps,b=(i+1)*2*PI/steps;tri([x,y,z],[x+r*Math.cos(a),y,z+r*.65*Math.sin(a)],[x+r*Math.cos(b),y,z+r*.65*Math.sin(b)],color);
+}}
+function roof(x,z,rise=1.25){const y=2.72,w=4.48,half=4.35;
+ quad([x-w,y,z-half],[x,y+rise,z-half],[x,y+rise,z+half],[x-w,y,z+half],'#9e5d52');
+ quad([x,y+rise,z-half],[x+w,y,z-half],[x+w,y,z+half],[x,y+rise,z+half],'#bb7e62');
+ for(let j=-3;j<=3;j++){const zz=z+j*1.05;quad([x-4.46,y+.014,zz],[x,y+rise+.014,zz],[x,y+rise+.014,zz+.045],[x-4.46,y+.014,zz+.045],'#dfaa7c');}
+ tri([x-w,y,z-half],[x+w,y,z-half],[x,y+rise,z-half],'#ccaa86');
+ tri([x+w,y,z+half],[x-w,y,z+half],[x,y+rise,z+half],'#c69d73');
+}
+function seed01(n){let h=Math.sin(n*127.1+43.71)*43758.5453;return h-Math.floor(h);}
+
+function prepareScene(){
+ const currentActor=active(),inside=Math.abs(currentActor.x)<4.8&&Math.abs(currentActor.z)<4.8;
+ const phaseVision=state.active==='ghost'&&inside;
+ const hideRoof=inside;
+ const key=String(phaseVision)+'|'+String(hideRoof)+'|'+state.objects.map(o=>o.id+':'+o.x+':'+o.z+':'+o.state).join('|');
+ if(key!==sceneCache.key){vertex=[];
+ // Distant meadow, ground and walkable paths. All visual changes, no collision change.
+ box(0,-.58,0,175,.24,175,'#6e997b');
+ box(0,-.25,0,29,.24,29,'#87aa85');
+ box(0,-.105,8.1,2.25,.032,12.6,'#d5c4a2');
+ box(0,-.102,4.6,2.25,.035,2.3,'#d8c09c');
+ for(let i=0;i<32;i++){const z=-12+i*.8,x=Math.sin(i*.71)*.18;
+  if(z>2.9&&z<5.3)continue;
+  box(x,-.062,z,.62,.009,.14,i%3===0?'#b8a387':'#ecd8b1');}
+ // Wall grounding contact decals, fixed positions and shades.
+ for(const w of obstacles().slice(0,5))box(w.x,-.007,w.z,w.w+.38,.012,w.d+.36,'#60846d');
+ if(!phaseVision)for(const w of obstacles().slice(0,5))box(w.x,w.y,w.z,w.w,w.h,w.d,'#e9d4b4');
+ if(!phaseVision){
+  if(!get('door').state)box(0,0,4,1.8,2.6,.35,'#87634d');else box(-.94,0,3.1,.18,2.6,1.75,'#87634d');
+  // Door framing, stone plinth and architectural accents, render only.
+  for(const x of [-1.05,1.05])box(x,0,4.22,.17,2.8,.14,'#f8e4c1');
+  box(0,2.73,4.2,2.38,.16,.2,'#b18a66');
+  for(const z of [-2.5,0,2.4])for(const x of [-3.92,3.92]){
+   box(x,.98,z,.055,1.12,1.0,'#9f8974');box(x+(x<0?-.034:.034),1.02,z,.042,1.02,.87,'#81b5bc');
+   box(x+(x<0?-.052:.052),1.53,z,.048,.08,.89,'#f6dcbc');
+   box(x+(x<0?-.052:.052),1.02,z,.052,1.05,.085,'#f6dcbc');
+  }
+  if(!hideRoof){roof(0,0);box(2.4,3.14,-1.75,.72,1.4,.74,'#b98373');box(2.4,4.45,-1.75,.85,.16,.87,'#e7ba91');}
+ }
+ // Landscape: deterministic detail budget, no input/state mutation, no textures/network.
+ for(let i=0;i<54;i++){
+  const x=-13.6+27.2*seed01(i*8+1),z=-13.6+27.2*seed01(i*8+2);
+  if((Math.abs(x)<4.8&&Math.abs(z)<4.7)||Math.abs(x)<1.5&&z>4||Math.abs(x)<.65&&z>5)continue;
+  if(i%8===0){groundDisk(x,z,.34,'#789875',-.006);box(x,-.015,z,.33,.12,.27,'#bdac8e');}
+  else{const h=.16+.20*seed01(i+91);cone(x,-.008,z,.11,h,i%3===0?'#d4c58c':'#548966');}
+ }
+ const trees=[[-10,-9],[-11,1],[10,-8],[8,0],[5,10]];
+ trees.forEach(([x,z],i)=>{
+  groundDisk(x,z,1.65,'#658b70',-.002);
+  box(x,-.01,z,.40,1.8,.40,'#785b46');box(x+.05,1.32,z,.13,.47,.13,'#977654');
+  sphere(x,2.17,z,1.28,.94,1.19,i%3===0?'#377560':'#3a816a');
+  sphere(x-.48,2.65,z+.18,.88,.72,.89,'#58967b');
+  sphere(x+.43,2.93,z-.15,1.02,.78,.94,i%2?'#4a8f74':'#75a883');
+ });
+ // Flower beds and planted shrubs to give human scale and depth.
+ for(let i=0;i<14;i++){
+  const x=-12+24*seed01(i*3+800),z=-12+24*seed01(i*3+801);
+  if(Math.abs(x)<5&&Math.abs(z)<5||Math.abs(x)<1.3&&z>4)continue;
+  sphere(x,.14,z,.22,.16,.23,i%4===0?'#6d9c70':'#4e926c',6,3);
+  if(i%3===0)sphere(x,.31,z,.085,.085,.085,i%2?'#f3d28f':'#edb4a3',6,3);
+ }
+ for(const o of state.objects){if(o.id==='door')continue;
+  groundDisk(o.x,o.z,o.id==='pond'?1.15:.62,'#698b77',-.002);
+  switch(o.id){
+   case 'lamp':box(o.x,0,o.z,.19,1.5,.19,'#695647');sphere(o.x,1.52,o.z,.46,.35,.45,o.state?'#fff1b2':'#edd2a0');box(o.x,1.78,o.z,.74,.08,.74,'#d6af72');break;
+   case 'chest':box(o.x,0,o.z,1,.75,.7,'#92674c');box(o.x,.64,o.z,1.04,.16,.78,o.state?'#e2bd86':'#b9855b');box(o.x,.3,o.z+.37,.17,.17,.05,'#edcd8c');break;
+   case 'crate':box(o.x,0,o.z,.9,1,.9,'#b18a5d');box(o.x,.41,o.z+.46,.9,.14,.04,'#dec190');box(o.x,.1,o.z+.46,.13,.79,.04,'#856347');break;
+   case 'perch':box(o.x,0,o.z,.5,2.3,.5,'#826a52');box(o.x,2.2,o.z,1.8,.15,.5,'#d2b689');break;
+   case 'bell':box(o.x,0,o.z,.16,1.7,.16,'#655c4f');cone(o.x,1.6,o.z,.45,.65,'#e0b971');sphere(o.x,1.52,o.z,.13,.12,.13,'#fff1b0');break;
+   case 'memory':box(o.x,0,o.z,.95,1.45,.65,o.state?'#b1dde2':'#8b9d9e');box(o.x,.4,o.z+.35,.60,.58,.06,'#4f6d75');break;
+   case 'flower':box(o.x,0,o.z,.12,.6,.12,'#5e936c');sphere(o.x,.67,o.z,.32,.28,.32,o.state?'#c8eef2':'#e7aeba');break;
+   case 'pond':box(o.x,-.04,o.z,2.6,.032,2.2,'#3a93a7');for(let k=0;k<4;k++)box(o.x-.9+k*.58,-.002,o.z-.4+k*.19,.33,.004,.06,'#b0d5c8');break;
+  }
+ }
+ sceneCache.key=key;sceneCache.data=new Float32Array(vertex);sceneCache.rebuilds++;
+ }
+ // Dynamic avatar geometry is separate: never concatenate the cached static scene again.
+ vertex=[];
+ const a=active(),phase=controller.time,step=controller.action==='laufen'?Math.sin(phase*13)*.09:0;
+ if(state.active==='fox'){
+   box(a.x,a.y+.20+Math.abs(step)*.28,a.z,1.02,.55,.65,'#bd6a38');
+   box(a.x,a.y+.65+Math.abs(step)*.28,a.z-.35,.62,.43,.54,'#d77b3e');
+   cone(a.x-.19,a.y+1.02,a.z-.47,.16,.37,'#a85a32');cone(a.x+.19,a.y+1.02,a.z-.47,.16,.37,'#a85a32');
+   box(a.x,a.y+.40,a.z+.59+.09*Math.sin(phase*7),.20,.26,.6,'#dfb57b');
+   sphere(a.x,a.y+.38,a.z-.49,.32,.22,.26,'#fff1dc',8,4);
+   for(const side of [-1,1]){sphere(a.x+side*.16,a.y+.85,a.z-.67,.046,.06,.05,'#263c3d',7,3);
+    cone(a.x+side*.23,a.y+.97,a.z-.53,.17,.34,'#7a4a36');}
+   sphere(a.x,a.y+.55,a.z-.73,.075,.055,.065,'#293739',7,3);
+   for(const side of [-1,1]){box(a.x+side*.33,a.y+.02+Math.max(0,side*step),a.z-.24,.17,.3,.18,'#774638');box(a.x+side*.33,a.y+.02+Math.max(0,-side*step),a.z+.27,.17,.3,.18,'#774638');}
+ }
+ if(state.active==='raven'){
+  const wing=.15+.42*(.5+.5*Math.sin(phase*15));box(a.x,a.y,a.z,.55,.43,.62,'#242d43');
+  for(const side of [-1,1]){box(a.x+side*(.32+wing/2),a.y+.14+wing*.35,a.z,wing+.32,.13,.43,'#3e5269');}
+  cone(a.x,a.y+.22,a.z-.34,.18,.36,'#d1ab67');
+  sphere(a.x,a.y+.25,a.z-.22,.29,.28,.29,'#263347',8,4);
+  for(const side of [-1,1]){sphere(a.x+side*.18,a.y+.31,a.z-.44,.042,.048,.04,'#ddded4',7,3);
+   for(let i=0;i<3;i++)box(a.x+side*(.40+wing*.34+i*.11),a.y+.14+wing*.3,a.z+.1+i*.12,.16,.045,.32,'#526b79');}
+  box(a.x,a.y-.08,a.z+.39,.17,.14,.45,'#2e3848');
+ }
+ if(state.active==='ghost'){
+  const bob=.09*Math.sin(phase*3.1);box(a.x,a.y+bob,a.z,.6,.85,.54,'#97d8db');
+  cone(a.x,a.y+.61+bob,a.z,.46,.68,'#d7f5e6');
+  sphere(a.x,a.y+.89+bob,a.z,.37,.39,.36,'#d8f7ef',7,3);
+  for(const side of [-1,1])sphere(a.x+side*.14,a.y+.92+bob,a.z-.328,.047,.065,.048,'#3f7081',7,3);
+  sphere(a.x,a.y+.72+bob,a.z-.34,.08,.035,.035,'#7caab1',7,3);
+ }
+}
+// Correctly decode authored sRGB colors before light multiplication, encode once at output.
+// One warm directional key + cool ambient fill + cheap distance fog, no shadow-map pass.
+const vsh='attribute vec3 position;attribute vec3 normal;attribute vec3 color;uniform mat4 vp;uniform vec3 eyePos;varying vec3 vColor;void main(){gl_Position=vp*vec4(position,1.);vec3 n=normalize(normal);float sun=max(0.,dot(n,normalize(vec3(-.48,.88,.29))));float hemi=.30+.18*max(0.,n.y);float shade=hemi+.55*sun;vec3 linear=pow(color,vec3(2.2))*shade;float fog=clamp((distance(position,eyePos)-17.)/62.,0.,.78);vec3 rgb=mix(linear,pow(vec3(.70,.81,.77),vec3(2.2)),fog);vColor=pow(max(rgb,vec3(0.)),vec3(1./2.2));}';
+const fsh='precision mediump float;varying vec3 vColor;void main(){gl_FragColor=vec4(vColor,1.);}';
+const skyVS='attribute vec2 xy;varying vec2 uv;void main(){uv=xy*.5+.5;gl_Position=vec4(xy,0.,1.);}';
+const skyFS='precision mediump float;varying vec2 uv;void main(){vec3 top=vec3(.22,.39,.51);vec3 horizon=vec3(.80,.86,.78);vec3 low=vec3(.92,.85,.72);vec3 c=mix(low,horizon,smoothstep(.07,.48,uv.y));c=mix(c,top,smoothstep(.44,1.,uv.y));float sun=1.-smoothstep(.04,.12,length((uv-vec2(.79,.78))*vec2(1.3,1.0)));c=mix(c,vec3(1.,.93,.70),sun*.70);gl_FragColor=vec4(c,1.);}';
+function shader(type,text){const s=gl.createShader(type);gl.shaderSource(s,text);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;}
+let prog,skyProg,skyBuf,staticBuf,dynamicBuf,uploadedStaticKey=null,attrs,uniform,eyeUniform,skyXY;
+function initGPU(){prog=gl.createProgram();gl.attachShader(prog,shader(gl.VERTEX_SHADER,vsh));gl.attachShader(prog,shader(gl.FRAGMENT_SHADER,fsh));gl.linkProgram(prog);if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(prog));staticBuf=gl.createBuffer();dynamicBuf=gl.createBuffer();uploadedStaticKey=null;attrs=['position','normal','color'].map(n=>gl.getAttribLocation(prog,n));uniform=gl.getUniformLocation(prog,'vp');eyeUniform=gl.getUniformLocation(prog,'eyePos');
+ skyProg=gl.createProgram();gl.attachShader(skyProg,shader(gl.VERTEX_SHADER,skyVS));gl.attachShader(skyProg,shader(gl.FRAGMENT_SHADER,skyFS));gl.linkProgram(skyProg);if(!gl.getProgramParameter(skyProg,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(skyProg));
+ skyXY=gl.getAttribLocation(skyProg,'xy');skyBuf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,skyBuf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+ }
+const perspective=(fov,ratio,near,far)=>{const f=1/Math.tan(fov/2),d=1/(near-far);return [f/ratio,0,0,0,0,f,0,0,0,0,(far+near)*d,-1,0,0,2*far*near*d,0]};
+function lookAt(e,t){let z=e.map((v,i)=>v-t[i]),l=Math.hypot(...z);z=z.map(v=>v/l);let x=[z[2],0,-z[0]];l=Math.hypot(...x)||1;x=x.map(v=>v/l);let y=[z[1]*x[2]-z[2]*x[1],z[2]*x[0]-z[0]*x[2],z[0]*x[1]-z[1]*x[0]];return [x[0],y[0],z[0],0,x[1],y[1],z[1],0,x[2],y[2],z[2],0,-x.reduce((s,v,i)=>s+v*e[i],0),-y.reduce((s,v,i)=>s+v*e[i],0),-z.reduce((s,v,i)=>s+v*e[i],0),1];}
+function mul(A,B){const o=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++)o[c*4+r]=A[r]*B[c*4]+A[r+4]*B[c*4+1]+A[r+8]*B[c*4+2]+A[r+12]*B[c*4+3];return o;}
+function resize(){const d=Math.min(highResolution?1.5:1.25,devicePixelRatio||1),max=highResolution?1400000:700000,w=Math.max(1,innerWidth*d),h=Math.max(1,innerHeight*d),q=Math.min(1,Math.sqrt(max/(w*h)));canvas.width=Math.floor(w*q);canvas.height=Math.floor(h*q);}
+// Exact segment/expanded-AABB intersection in [0,1]. The camera has a safety radius.
+function firstHit(a,b,margin=.18){
+ let hit=1;const d=b.map((v,i)=>v-a[i]);
+ for(const ob of obstacles()){
+  const lo=[ob.x-ob.w/2-margin,ob.y-margin,ob.z-ob.d/2-margin];
+  const hi=[ob.x+ob.w/2+margin,ob.y+ob.h+margin,ob.z+ob.d/2+margin];
+  let near=0,far=1,inside=true;
+  for(let axis=0;axis<3;axis++){
+   if(a[axis]<lo[axis]||a[axis]>hi[axis])inside=false;
+   if(Math.abs(d[axis])<1e-9){if(a[axis]<lo[axis]||a[axis]>hi[axis]){near=2;break;}}
+   else {let t0=(lo[axis]-a[axis])/d[axis],t1=(hi[axis]-a[axis])/d[axis];if(t0>t1)[t0,t1]=[t1,t0];near=Math.max(near,t0);far=Math.min(far,t1);if(near>far)break;}
+  }
+  // An actor can be inside an obstacle only in ghost mode: use the exit instead of
+  // collapsing the camera into the wall. Actor remains visible through the phase wall.
+  if(near<=far&&!inside)hit=Math.min(hit,Math.max(0,near-.025));
+ }
+ return hit;
+}
+function camera(frameDt=1/60){
+ const a=active(),t=[a.x,a.y+1,a.z];
+ const ideal=[a.x+Math.sin(state.yaw)*Math.cos(state.pitch)*state.zoom,a.y+1+Math.sin(state.pitch)*state.zoom,a.z+Math.cos(state.yaw)*Math.cos(state.pitch)*state.zoom];
+ const hit=firstHit(t,ideal),desired=t.map((v,i)=>v+(ideal[i]-v)*hit);
+ const k=1-Math.exp(-12*clamp(frameDt,0,.10));
+ // Smoothing from the previous eye can cross a new wall. Clip AFTER interpolation.
+ let eye=cameraFollow.eye?lerpVec(cameraFollow.eye,desired,k):desired;
+ const safe=firstHit(t,eye);eye=t.map((v,i)=>v+(eye[i]-v)*safe);
+ // The target itself is allowed inside a wall only for ghost-phase gameplay.
+ cameraFollow.eye=eye;cameraFollow.target=t;
+ return {e:eye,t};
+}
+let renderError='',last=0,acc=0,frameEvents=0;
+// Offline Canvas2D compatibility mode: identical gameplay, simplified orthographic visuals.
+// WebGL-capable browsers keep the existing 3D renderer; no external dependencies.
+function drawFallback(now){
+ const c=ctx2d,w=canvas.width,h=canvas.height,scale=Math.max(3,Math.min((w-20)/29,(h-45)/29))*clamp(12/state.zoom,.7,1.7);
+ const px=x=>w/2+x*scale,py=z=>h/2+z*scale;
+ const bg=c.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#183a46');bg.addColorStop(1,'#3f746c');c.fillStyle=bg;c.fillRect(0,0,w,h);
+ c.save();c.translate(w/2,h/2);c.rotate(state.yaw);c.translate(-w/2,-h/2);
+ c.fillStyle='#789876';c.fillRect(px(-13.5),py(-13.5),27*scale,27*scale);
+ for(let x=-13;x<=13;x++)for(let z=-13;z<=13;z++){
+   const r=(Math.sin(x*82.31+z*19.17)*21413.77)%1;
+   if(r>.67){c.fillStyle='#d6d99a33';c.fillRect(px(x)+scale*.2,py(z)+scale*.2,scale*.09,scale*.3);}
+ }
+ c.lineWidth=Math.max(1,scale*.05);c.strokeStyle='#d9f7be55';c.strokeRect(px(-13.4),py(-13.4),26.8*scale,26.8*scale);
+ c.fillStyle='#d4cfab';c.fillRect(px(-4),py(-4),8*scale,8*scale);
+ const pond=get('pond');c.beginPath();c.ellipse(px(pond.x),py(pond.z),scale*1.05,scale*.73,0,0,Math.PI*2);c.fillStyle='#72bad0';c.fill();
+ for(const o of obstacles()){
+   c.fillStyle=o.h>2.5?'#5b6660':'#8b7967';c.fillRect(px(o.x-o.w/2),py(o.z-o.d/2),Math.max(1,o.w*scale),Math.max(1,o.d*scale));
+ }
+ const colors={lamp:'#f4eaaa',chest:'#c9905d',perch:'#719eaa',bell:'#f5c777',memory:'#b5a7ec',flower:'#eda8c1',door:'#9ca88d',crate:'#a47a51'};
+ for(const o of state.objects){if(o.id==='pond')continue;
+  const X=px(o.x),Y=py(o.z);c.beginPath();c.arc(X,Y,Math.max(3,scale*.33),0,Math.PI*2);c.fillStyle=colors[o.id]||'#d5c5a2';c.fill();
+  c.fillStyle='#183438';c.font=`${Math.max(8,Math.round(scale*.42))}px sans-serif`;c.textAlign='center';c.fillText(o.title,X,Y-scale*.52);
+ }
+ for(const id of ['fox','raven','ghost']){const a=state.actors[id],X=px(a.x),Y=py(a.z);
+  if(id==='raven') {c.beginPath();c.ellipse(X,Y,scale*.53,scale*.26,0,0,Math.PI*2);c.fillStyle='#1e3341a0';c.fill();}
+  c.beginPath();c.arc(X,Y-Math.min(a.y,5)*scale*.18,Math.max(4,scale*.42),0,Math.PI*2);c.fillStyle=({fox:'#dd8449',raven:'#304d60',ghost:'#d9f3f0'})[id];c.fill();
+  if(id==='fox'){
+   c.fillStyle='#a94f32';for(const d of [-1,1]){c.beginPath();c.moveTo(X+d*scale*.19,Y-scale*.32);c.lineTo(X+d*scale*.4,Y-scale*.78);c.lineTo(X+d*scale*.02,Y-scale*.55);c.fill();}
+   c.beginPath();c.ellipse(X+scale*.39,Y+scale*.31,scale*.35,scale*.16,-.6,0,Math.PI*2);c.fillStyle='#f0b478';c.fill();
+  }else if(id==='raven'){
+   c.fillStyle='#213f52';for(const d of [-1,1]){c.beginPath();c.moveTo(X,Y);c.lineTo(X+d*scale*.85,Y-scale*.23);c.lineTo(X+d*scale*.6,Y+scale*.2);c.fill();}
+  }else{
+   c.strokeStyle='#d2fff2b0';c.lineWidth=scale*.13;c.beginPath();c.ellipse(X,Y-Math.min(a.y,5)*scale*.18,scale*.55,scale*.5,0,0,Math.PI*2);c.stroke();
+  }
+  c.fillStyle='#1c3438';for(const d of [-1,1]){c.beginPath();c.arc(X+d*scale*.12,Y-Math.min(a.y,5)*scale*.18-scale*.07,Math.max(1,scale*.045),0,Math.PI*2);c.fill();}
+  if(id===state.active){c.lineWidth=Math.max(2,scale*.14);c.strokeStyle='#f2e8a8';c.beginPath();c.arc(X,Y-Math.min(a.y,5)*scale*.18,Math.max(4,scale*.42),0,Math.PI*2);c.stroke();}
+  c.fillStyle='#f3fff0';c.font=`bold ${Math.max(9,Math.round(scale*.6))}px sans-serif`;c.textAlign='center';c.fillText(({fox:'Fuchs',raven:'Rabe',ghost:'Geist'})[id],X,Y+scale*1.05);
+ }
+ c.restore();c.save();c.translate(w-30,42);c.rotate(state.yaw);c.fillStyle='#f0f7e1';c.font='bold 15px sans-serif';c.textAlign='center';c.fillText('N',0,-13);c.fillText('▲',0,4);c.restore();
+}
+function draw(now){requestAnimationFrame(draw);if(state.glLost)return;const delta=Math.min(.1,Math.max(0,(now-last)/1000||.016));last=now;
+ if(state.started&&!state.paused&&!document.hidden){acc+=delta;let count=0;const input=combinedInput();
+ if(input.gamepadAct&&!lastGamepadAction)interact();lastGamepadAction=input.gamepadAct;
+ while(acc>=1/60&&count<5){acc-=1/60;
+  applyLook(input.lookX,input.lookY,1/60);controlledStep(input,1/60);
+  state.ticks++;count++;}if(count===5)acc=0;
+ }else{lastGamepadAction=true;acc=0;}
+ if(ctx2d){drawFallback(now);state.frames++;frameEvents++;if(frameEvents%15===0)updateHUD();return;}
+ try{prepareScene();const dynamicData=new Float32Array(vertex),cam=camera(delta),vp=mul(perspective(PI/3,canvas.width/canvas.height,.1,110),lookAt(cam.e,cam.t));gl.viewport(0,0,canvas.width,canvas.height);gl.clearColor(.24,.42,.52,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+ gl.disable(gl.DEPTH_TEST);gl.useProgram(skyProg);gl.bindBuffer(gl.ARRAY_BUFFER,skyBuf);gl.enableVertexAttribArray(skyXY);gl.vertexAttribPointer(skyXY,2,gl.FLOAT,false,0,0);gl.drawArrays(gl.TRIANGLES,0,3);gl.disableVertexAttribArray(skyXY);
+ gl.enable(gl.DEPTH_TEST);gl.useProgram(prog);gl.uniformMatrix4fv(uniform,false,vp);gl.uniform3fv(eyeUniform,cam.e);
+ const drawBuffer=(buffer,data)=>{gl.bindBuffer(gl.ARRAY_BUFFER,buffer);attrs.forEach((loc,i)=>{gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,3,gl.FLOAT,false,36,i*12)});gl.drawArrays(gl.TRIANGLES,0,data.length/9);};
+ if(uploadedStaticKey!==sceneCache.key){gl.bindBuffer(gl.ARRAY_BUFFER,staticBuf);gl.bufferData(gl.ARRAY_BUFFER,sceneCache.data,gl.STATIC_DRAW);uploadedStaticKey=sceneCache.key;gpuStats.staticUploads++;}
+ drawBuffer(staticBuf,sceneCache.data);gpuStats.staticDraws++;
+ gl.bindBuffer(gl.ARRAY_BUFFER,dynamicBuf);gl.bufferData(gl.ARRAY_BUFFER,dynamicData,gl.DYNAMIC_DRAW);gpuStats.dynamicUploads++;
+ drawBuffer(dynamicBuf,dynamicData);gpuStats.dynamicDraws++;
+ state.frames++;frameEvents++;if(frameEvents%15===0)updateHUD();}catch(err){renderError=String(err);$('feedback').textContent='Darstellungsfehler: '+renderError;state.paused=true;}
+}
+let drag=null;canvas.addEventListener('pointerdown',e=>{drag={id:e.pointerId,x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;state.yaw+=.006*(e.clientX-drag.x);state.pitch=clamp(state.pitch+.004*(e.clientY-drag.y),-.06,1.20);drag.x=e.clientX;drag.y=e.clientY;});canvas.addEventListener('pointerup',e=>{if(drag?.id===e.pointerId)drag=null;});canvas.addEventListener('pointercancel',e=>{if(drag?.id===e.pointerId)drag=null;});canvas.addEventListener('lostpointercapture',e=>{if(drag?.id===e.pointerId)drag=null;});
+canvas.addEventListener('wheel',e=>{e.preventDefault();state.zoom=clamp(state.zoom*(e.deltaY>0?1.1:.9),3,25)},{passive:false});
+(()=>{const d=document,el=d.documentElement,b=d.getElementById('fullscreen');const req=el.requestFullscreen||el.webkitRequestFullscreen,ex=d.exitFullscreen||d.webkitExitFullscreen;const on=()=>!!(d.fullscreenElement||d.webkitFullscreenElement);if(!b||!req||!(d.fullscreenEnabled||d.webkitFullscreenEnabled))return;const sync=()=>{const v=on();b.setAttribute('aria-pressed',v?'true':'false');b.textContent=v?'Vollbild aus · V':'Vollbild · V';};const toggle=()=>{try{const p=on()?ex.call(d):req.call(el);if(p&&p.catch)p.catch(()=>{});}catch(_){}};b.hidden=false;b.addEventListener('click',toggle);d.addEventListener('fullscreenchange',sync);d.addEventListener('webkitfullscreenchange',sync);window.addEventListener('keydown',e=>{if(e.code!=='KeyV')return;if(e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;e.preventDefault();toggle();});sync();})();
+window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();state.keys.add(e.code);if(e.repeat)return;
+ if(e.code==='Digit1')setActor('fox');if(e.code==='Digit2')setActor('raven');if(e.code==='Digit3')setActor('ghost');if(e.code==='KeyF'&&!state.paused)interact();if(e.code==='KeyP')togglePause();if(e.code==='KeyC')resetView();});window.addEventListener('keyup',e=>state.keys.delete(e.code));
+function stop(){state.keys.clear();state.buttons.clear();resetSticks();drag=null;lastGamepadAction=true;controller.fox.jumpHeld=false;for(const id of ['fox','raven','ghost'])controller.velocity[id]={x:0,z:0};}window.addEventListener('blur',stop);document.addEventListener('visibilitychange',()=>{stop();acc=0;});
+document.querySelectorAll('[data-actor]').forEach(b=>b.addEventListener('click',()=>setActor(b.dataset.actor)));$('interact').onclick=()=>{if(!state.paused)interact();else note('Bitte zuerst fortsetzen.');};$('pause').onclick=togglePause;$('new').onclick=resetGame;
+for(const name of ['move','look'])bindStick(name);$('viewReset').onclick=resetView;
+for(const b of document.querySelectorAll('[data-tapmove]'))b.addEventListener('click',()=>tapMovement(b.dataset.tapmove));
+for(const b of document.querySelectorAll('[data-taplook]'))b.addEventListener('click',()=>tapLook(b.dataset.taplook));
+for(const b of document.querySelectorAll('[data-hold]')){const key=b.dataset.hold;const up=()=>state.buttons.delete(key);b.addEventListener('pointerdown',e=>{b.setPointerCapture(e.pointerId);state.buttons.add(key)});b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',up);}
+$('graphics').onclick=()=>{highResolution=!highResolution;$('graphics').textContent=highResolution?'Grafik · Hoch':'Grafik · Ausgewogen';$('graphics').setAttribute('aria-pressed',String(highResolution));resize();note(highResolution?'Hohe Auflösung aktiv.':'Ausgewogene Auflösung aktiv.');};$('export').onclick=exportSave;$('import').onclick=()=>$('loadfile').click();$('loadfile').addEventListener('change',async e=>{const f=e.target.files?.[0];e.target.value='';if(!f)return;try{if(f.size>30000)throw Error('Spielstand zu gross');applySave(JSON.parse(await f.text()));}catch(err){note('Import abgelehnt: '+err.message);}});
+$('begin').onclick=()=>{state.started=true;$('welcome').hidden=true;note('Bewege dich mit WASD; Rabe und Geist steigen mit Leertaste.');};
+canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();pausedBeforeContextLoss=state.paused;state.glLost=true;state.paused=true;stop();acc=0;updateHUD();$('feedback').textContent='Grafikkontext verloren – Wiederherstellung abwarten.';});canvas.addEventListener('webglcontextrestored',()=>{try{initGPU();state.glLost=false;state.paused=pausedBeforeContextLoss;resize();resetController();updateHUD();note(state.paused?'3D-Grafik wiederhergestellt; Spiel bleibt pausiert.':'3D-Grafik wiederhergestellt.');}catch(e){renderError=String(e);state.glLost=true;state.paused=true;$('feedback').textContent='Wiederherstellung fehlgeschlagen: '+renderError;}});
+window.addEventListener('resize',resize);if(gl)initGPU();resize();resetController();updateHUD();$('rendererType').textContent=gl?'WebGL · 3D':'Canvas · 2D-Ersatzansicht';if(ctx2d)$('moveHelp').textContent='Links laufen · Rechts Karte drehen/zoomen · WASD/Pfeile bewegen · Q/E drehen · 1/2/3 wechseln · F interagieren';requestAnimationFrame(draw);
+// QA test surface is explicitly opt-in; mutating test helpers are never exposed in normal gameplay.
+if(Object.hasOwn(window,'__NIGIN_QA_MODE__') && window.__NIGIN_QA_MODE__ === 'LOCAL_TEST_ONLY')
+Object.defineProperty(window,'__NIGIN3D_TEST',{value:Object.freeze({state,move,blocker,obstacles,setActor,available,nearest,interact,validate,snapshot,applySave,policy,doorOccupied,controlledStep,controller,camera,resetController,togglePause,resetGame,resetView,sweepHit,sweepActor,radial,sticks,applyLook,combinedInput,readGamepad,resetSticks,tapMovement,tapLook,prepareScene,getSceneCache:()=>({rebuilds:sceneCache.rebuilds,staticVertices:sceneCache.data.length/9,dynamicVertices:vertex.length/9,...gpuStats}),firstHit,getError:()=>renderError,getGL:()=>gl,getCameraState:()=>structuredClone(cameraFollow),getVisualStats:()=>({sky:true,gammaCorrect:true,highResolution,staticVertices:sceneCache.data.length/9,dynamicVertices:vertex.length/9,staticUploads:gpuStats.staticUploads})})});
+})();
+</script></body></html>
