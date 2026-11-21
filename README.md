@@ -1,7 +1,7 @@
 <h1 align="center">NIGIN · Drei Wesen</h1>
 
 <p align="center"><b><a href="https://marcohost33-maker.github.io/nigin-drei-wesen/NIGIN_A_Drei_Wesen_3D_v1_8_4.html">▶ Im Browser spielen</a></b> &nbsp;·&nbsp; <b><a href="https://github.com/marcohost33-maker/nigin-drei-wesen/releases/download/v1.8.4/NIGIN_A_Drei_Wesen_3D_v1_8_4.html">⬇ HTML herunterladen</a></b> &nbsp;·&nbsp; Version 1.8.4</p>
-<p align="center"><sub>Eine Datei · läuft offline · ohne Konto · keine Daten verlassen dein Gerät</sub></p>
+<p align="center"><sub>Eine Datei · läuft offline · ohne Konto · die Welt sendet keine Daten</sub></p>
 
 | Datei | Inhalt | Spielen | Download |
 |---|---|---|---|
@@ -29,7 +29,8 @@ Steuere Nigin als **Fuchs**, den **Raben** oder den **Geist** durch eine kleine 
 
 ## Datenschutz
 
-- Die Welt läuft vollständig lokal; die Datei baut keine Netzwerkverbindungen auf und lädt nichts nach.
+- Die Welt läuft vollständig lokal; die Datei lädt nichts nach und baut von sich aus keine Netzwerkverbindungen auf.
+- Beim Spielen über *Im Browser spielen* liefert GitHub Pages die Datei aus und verarbeitet dabei, wie jeder Webserver, Zugriffsdaten (etwa die IP-Adresse). Mit der heruntergeladenen Datei entfällt auch das.
 - Speichern erfolgt über eine Datei, die du selbst herunterlädst (JSON/PNG). Es gibt keinen Browserspeicher.
 - Keine Konten, keine Cookies, keine Analyse oder Werbung.
 
