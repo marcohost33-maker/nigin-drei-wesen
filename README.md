@@ -43,6 +43,8 @@ Die Dateien in diesem Repository und im Release sind byte-gleich. SHA-256 (auch 
 f3cf41f4d1ec67c74949af75977df4ef6271d3e80f66a864c906b3b113adff8e  NIGIN_B_Rabenwerkstatt_v1_8_1.html
 ```
 
+Was sich je Version geändert hat, steht in [CHANGELOG.md](CHANGELOG.md).
+
 ## Lizenz
 
 Kostenlos spielen und unverändert nicht-kommerziell weitergeben ist erlaubt, mit Herkunftsangabe. Alles Weitere regelt die [NIGIN Spielnutzungs-Lizenz](LICENSE.md).
